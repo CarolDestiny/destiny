@@ -93,11 +93,11 @@ void destiny::QueueBoundMPMC<T, SIZE>::push(T value) noexcept
 			break;
 		}
 		// wait
-		if (waitTime > 20) {
+		if (waitTime > 2048) {
 			producerWait_.fetch_add(1, std::memory_order_release);
 			slot.sequence.wait(seq, std::memory_order_relaxed);
 			producerWait_.fetch_sub(1, std::memory_order_relaxed);
-		} else if (waitTime > 10) {
+		} else if (waitTime > 1024) {
 			std::this_thread::yield();
 		}
 		++waitTime;
@@ -124,11 +124,11 @@ void destiny::QueueBoundMPMC<T, SIZE>::pop(T& value) noexcept
 			break;
 		}
 		// wait
-		if (waitTime > 20) {
+		if (waitTime > 2048) {
 			consumerWait_.fetch_add(1, std::memory_order_release);
 			slot.sequence.wait(seq, std::memory_order_relaxed);
 			consumerWait_.fetch_sub(1, std::memory_order_relaxed);
-		} else if (waitTime > 10) {
+		} else if (waitTime > 1024) {
 			std::this_thread::yield();
 		}
 		++waitTime;
