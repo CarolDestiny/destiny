@@ -1,0 +1,38 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/code",
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": false,
+    "cmake.configureOnEdit": false,
+    "cmake.saveBeforeBuild": true,
+    "cmake.buildBeforeRun": true,
+    "files.eol": "\r\n",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.compilerPath": "D:/cpp/mingw64/bin/g++.exe",
+    "C_Cpp.default.cppStandard": "c++20",
+    "C_Cpp.default.intelliSenseMode": "windows-gcc-x64",
+    "C_Cpp.formatting": "clangFormat",
+    "C_Cpp.clang_format_path": "D:/cpp/LLVM/bin/clang-format.exe",
+    "C_Cpp.clang_format_style": "file",
+    "C_Cpp.clang_format_fallbackStyle": "none",
+    "files.associations": {
+        "*.hpp": "cpp"
+    },
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "[c]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": false,
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.wordWrapColumn": 120
+    },
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": false,
+        "editor.detectIndentation": false,
+        "editor.tabSize": 4,
+        "editor.wordWrapColumn": 120
+    }
+}
