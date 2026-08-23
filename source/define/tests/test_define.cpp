@@ -10,6 +10,6 @@ TEST(DefineTest, VersionMacros)
 
 TEST(DefineTest, DebugMacro)
 {
-    // 断言 DESTINY_DEBUG 是合法宏（Debug 下为 1，Release 下为 0）
+    // Assert DESTINY_DEBUG is a valid macro (1 in Debug, 0 in Release)
     EXPECT_TRUE(DESTINY_DEBUG == 0 || DESTINY_DEBUG == 1);
 }

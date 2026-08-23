@@ -1,2 +1,3 @@
-# define 模块：全局宏与常量，纯头文件，无实现、无测试依赖
+# define: global macros and constants, header-only, no implementation,
+# no test dependencies
 destiny_add_module()

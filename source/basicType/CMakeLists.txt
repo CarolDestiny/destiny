@@ -1,2 +1,2 @@
-# basicType：基础类型容器模块
+# basicType: container module for basic types
 destiny_add_module()

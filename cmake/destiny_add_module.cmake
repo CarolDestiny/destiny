@@ -1,25 +1,39 @@
 # =====================================================================
-# destiny_add_module() —— 模块化构建引擎
-#   include/  公开头（对外 API）   —— 放在 include/destiny/<模块路径>/ 下
-#   src/      实现源码 + 私有头     —— src/*.cpp 编译进库，src/*.hpp 仅供模块内部
-#   tests/    单元测试（每个 .cpp 一个测试 exe）
-#   examples/ 样例程序（每个 .cpp 一个 exe）
-#   benchmarks/ 跑分程序（每个 .cpp 一个 exe）
-#   docs/     文档（含 PLAN.md 实现计划）
-# 模块判定：目录里有 CMakeLists.txt 即视为模块（本宏会 add_subdirectory 它）。
-# 命名约定：target = 相对 source/ 的路径用下划线拼接（如 core_log）；
-#           公开头 include 前缀 = destiny/<路径>/（如 #include "destiny/core/log/log.hpp"）；
-#           命名空间 = destiny::<路径>（如 namespace destiny::core::log）。
+# destiny_add_module() -- modular build engine
+#
+# Conventions: a module directory contains exactly these content dirs:
+#   include/    public headers (external API) under include/destiny/<module path>/
+#   src/        implementation + private headers: src/*.cpp compiled into the
+#               library, src/*.hpp visible only inside the module
+#   tests/      unit tests (one test exe per .cpp)
+#   examples/   example programs (one exe per .cpp)
+#   benchmarks/ benchmark programs (one exe per .cpp)
+#   docs/       docs (incl. PLAN.md implementation plan)
+# Module rule: a directory with CMakeLists.txt is a module (add_subdirectory'd).
+# Naming: target = path relative to source/ joined with underscores (core_log);
+#         public header prefix = destiny/<path>/ (#include "destiny/core/log/log.hpp");
+#         namespace = destiny::<path> (namespace destiny::core::log).
 
-# GTest：用项目自带的 googletest 源码编译（thirdLib/googletest）。
-# 这样 gtest 与项目使用完全相同的编译器和标准库，ABI 必然匹配。
-# 不依赖 vcpkg 的 MinGW 预编译 gtest（其 libc++/pthread 与 gcc/clang 不兼容）。
-# add_subdirectory 自带防重复加载保护，此处调用一次全局生效。
+# GTest: compiled from the vendored googletest source (thirdLib/googletest).
+# This builds gtest with exactly the same compiler and stdlib as the project,
+# so the ABI always matches. Avoids vcpkg's prebuilt MinGW gtest (whose
+# libc++/pthread are incompatible with gcc/clang).
+# add_subdirectory has built-in duplicate-load protection; call once globally.
 add_subdirectory("${CMAKE_SOURCE_DIR}/thirdLib/googletest")
 # =====================================================================
 
 function(destiny_add_module)
-  # ---- ① 模块身份：相对 source/ 的路径 ----
+  destiny_add_module_or_app("")
+endfunction()
+
+# Application module: builds an executable (apps applications), not a library.
+# Shares all logic with destiny_add_module; only the target type differs.
+function(destiny_add_application)
+  destiny_add_module_or_app("EXECUTABLE")
+endfunction()
+
+function(destiny_add_module_or_app _dm_mode)
+  # ---- 1. Module identity: path relative to source/ ----
   if(NOT DESTINY_SOURCE_ROOT)
     set(DESTINY_SOURCE_ROOT "${CMAKE_SOURCE_DIR}/source")
   endif()
@@ -27,10 +41,10 @@ function(destiny_add_module)
   if(_dm_rel STREQUAL ".")
     set(_dm_rel "")
   endif()
-  # 路径转 target 名：core/log -> core_log
+  # Path to target name: core/log -> core_log
   string(REPLACE "/" "_" _dm_target "${_dm_rel}")
 
-  # ---- ② 递归发现子模块（直接子目录中含 CMakeLists.txt 的）----
+  # ---- 2. Recursively discover submodules (direct subdirs with CMakeLists.txt) ----
   file(GLOB _dm_subdirs RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
        CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*/CMakeLists.txt")
   foreach(_dm_sub IN LISTS _dm_subdirs)
@@ -38,7 +52,7 @@ function(destiny_add_module)
     add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/${_dm_subdir}")
   endforeach()
 
-  # ---- 形态判定 ----
+  # ---- Shape detection ----
   set(_dm_has_src FALSE)
   if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src")
     file(GLOB _dm_sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -53,22 +67,32 @@ function(destiny_add_module)
     set(_dm_has_children TRUE)
   endif()
 
-  # ---- ③ 建库目标（按形态分流）----
+  # ---- 3. Build target (per shape) ----
   if(_dm_has_src)
-    # 实模块：静态库
-    add_library("${_dm_target}" STATIC ${_dm_sources})
-    # 公开头 PUBLIC + 私有头 PRIVATE（只对本模块内部可见，不传给消费者）
-    target_include_directories("${_dm_target}" PUBLIC
-      "${CMAKE_CURRENT_SOURCE_DIR}/include")
-    target_include_directories("${_dm_target}" PRIVATE
-      "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    if(_dm_mode STREQUAL "EXECUTABLE")
+      # Application module: executable
+      add_executable("${_dm_target}" ${_dm_sources})
+      target_include_directories("${_dm_target}" PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include")
+      target_include_directories("${_dm_target}" PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    else()
+      # Real module: static library
+      add_library("${_dm_target}" STATIC ${_dm_sources})
+      # Public headers PUBLIC + private headers PRIVATE (visible only inside the
+      # module, never propagated to consumers)
+      target_include_directories("${_dm_target}" PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include")
+      target_include_directories("${_dm_target}" PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/src")
+    endif()
   elseif(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/include")
-    # 纯头模块：INTERFACE 库
+    # Header-only module: INTERFACE library
     add_library("${_dm_target}" INTERFACE)
     target_include_directories("${_dm_target}" INTERFACE
       "${CMAKE_CURRENT_SOURCE_DIR}/include")
   elseif(_dm_has_children)
-    # 容器模块：聚合 INTERFACE 库，链接全部子模块
+    # Container module: aggregate INTERFACE library linking all submodules
     add_library("${_dm_target}" INTERFACE)
     foreach(_dm_sub IN LISTS _dm_subdirs)
       get_filename_component(_dm_subdir "${_dm_sub}" DIRECTORY)
@@ -77,11 +101,11 @@ function(destiny_add_module)
       target_link_libraries("${_dm_target}" INTERFACE "${_dm_child}")
     endforeach()
   else()
-    # 空模块：也建 INTERFACE 库，保证任何依赖方都能链接它
+    # Empty module: also build INTERFACE library so any dependant can link it
     add_library("${_dm_target}" INTERFACE)
   endif()
 
-  # ---- ④ 测试：每个 tests/*.cpp 一个测试 exe ----
+  # ---- 4. Tests: one test exe per tests/*.cpp ----
   if(DESTINY_BUILD_TESTS AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests")
     file(GLOB _dm_tests CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp")
     foreach(_dm_test IN LISTS _dm_tests)
@@ -91,7 +115,8 @@ function(destiny_add_module)
       target_link_libraries("${_dm_test_target}" PRIVATE
         "${_dm_target}" GTest::gtest_main GTest::gmock)
       add_test(NAME "${_dm_test_target}" COMMAND "${_dm_test_target}")
-      # x86 构建：把运行时 DLL 复制到 exe 旁（bin/），否则运行时找不到 libc++ 报 0xc000007b
+      # x86 build: copy runtime DLLs next to the exe (bin/), otherwise the
+      # exe fails at runtime with 0xc000007b (libc++ not found)
       if(DESTINY_X86_RUNTIME_DLLS)
         foreach(_dm_dll IN LISTS DESTINY_X86_RUNTIME_DLLS)
           if(EXISTS "${_dm_dll}")
@@ -104,7 +129,7 @@ function(destiny_add_module)
     endforeach()
   endif()
 
-  # ---- ⑤ 样例：每个 examples/*.cpp 一个 exe ----
+  # ---- 5. Examples: one exe per examples/*.cpp ----
   if(DESTINY_BUILD_EXAMPLES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/examples")
     file(GLOB _dm_examples CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/examples/*.cpp")
     foreach(_dm_ex IN LISTS _dm_examples)
@@ -115,7 +140,7 @@ function(destiny_add_module)
     endforeach()
   endif()
 
-  # ---- ⑥ 跑分：每个 benchmarks/*.cpp 一个 exe ----
+  # ---- 6. Benchmarks: one exe per benchmarks/*.cpp ----
   if(DESTINY_BUILD_BENCHMARKS AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks")
     file(GLOB _dm_bench CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/benchmarks/*.cpp")
     foreach(_dm_b IN LISTS _dm_bench)
