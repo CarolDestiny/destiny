@@ -1,0 +1,74 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "gcc-x64",
+      "displayName": "MinGW GCC 16.2 (x64)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x64",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "DESTINY_TOOLCHAIN_ARCH": "x64",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DESTINY_BUILD_TESTS": "ON",
+        "DESTINY_BUILD_EXAMPLES": "OFF",
+        "DESTINY_BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "gcc-x86",
+      "displayName": "MinGW GCC 16.2 (x86)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x86",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/gcc.cmake",
+      "cacheVariables": {
+        "DESTINY_TOOLCHAIN_ARCH": "x86",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DESTINY_BUILD_TESTS": "ON",
+        "DESTINY_BUILD_EXAMPLES": "OFF",
+        "DESTINY_BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "clang-x64",
+      "displayName": "llvm-mingw Clang 22.1 (x64)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x64",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/llvm-mingw.cmake",
+      "cacheVariables": {
+        "DESTINY_TOOLCHAIN_ARCH": "x64",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DESTINY_BUILD_TESTS": "ON",
+        "DESTINY_BUILD_EXAMPLES": "OFF",
+        "DESTINY_BUILD_BENCHMARKS": "OFF"
+      }
+    },
+    {
+      "name": "clang-x86",
+      "displayName": "llvm-mingw Clang 22.1 (x86)",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x86",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/llvm-mingw.cmake",
+      "cacheVariables": {
+        "DESTINY_TOOLCHAIN_ARCH": "x86",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "DESTINY_BUILD_TESTS": "ON",
+        "DESTINY_BUILD_EXAMPLES": "OFF",
+        "DESTINY_BUILD_BENCHMARKS": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "gcc-x64",   "configurePreset": "gcc-x64" },
+    { "name": "gcc-x86",   "configurePreset": "gcc-x86" },
+    { "name": "clang-x64", "configurePreset": "clang-x64" },
+    { "name": "clang-x86", "configurePreset": "clang-x86" }
+  ],
+  "testPresets": [
+    { "name": "gcc-x64",   "configurePreset": "gcc-x64",   "output": { "outputOnFailure": true } },
+    { "name": "gcc-x86",   "configurePreset": "gcc-x86",   "output": { "outputOnFailure": true } },
+    { "name": "clang-x64", "configurePreset": "clang-x64", "output": { "outputOnFailure": true } },
+    { "name": "clang-x86", "configurePreset": "clang-x86", "output": { "outputOnFailure": true } }
+  ]
+}

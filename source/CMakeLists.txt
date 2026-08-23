@@ -1,0 +1,6 @@
+add_subdirectory(define)
+add_subdirectory(iso)
+add_subdirectory(core)
+add_subdirectory(basicType)
+add_subdirectory(moreType)
+add_subdirectory(apps)
