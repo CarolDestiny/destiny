@@ -165,12 +165,10 @@ void Uint16::bit(Bool& out, std::size_t i) const noexcept
 
 void Uint16::setBit(Bool v, std::size_t i) noexcept
 {
-    if (v.value())
-    {
+    if (v.value()) {
         data_ = static_cast<unsigned short>(data_ | (1u << i));
     }
-    else
-    {
+    else {
         data_ = static_cast<unsigned short>(data_ & ~(1u << i));
     }
     return;

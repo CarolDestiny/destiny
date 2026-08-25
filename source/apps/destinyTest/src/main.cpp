@@ -1,8 +1,10 @@
 #include <cstdio>
 #include <iostream>
 
-#include "destiny/basicType/destinyNumeric/destinyNumeric.hpp"
+#include "../../../core/replay/src/boundMPSC.hpp"
 int main()
 {
+    destiny::core::replay::detail::BoundMPSC boundMPSC;
+
     return 0;
 }

@@ -140,12 +140,10 @@ void Uint8::bit(Bool& out, std::size_t i) const noexcept
 
 void Uint8::setBit(Bool v, std::size_t i) noexcept
 {
-    if (v.value())
-    {
+    if (v.value()) {
         data_ = static_cast<unsigned char>(data_ | (1u << i));
     }
-    else
-    {
+    else {
         data_ = static_cast<unsigned char>(data_ & ~(1u << i));
     }
     return;

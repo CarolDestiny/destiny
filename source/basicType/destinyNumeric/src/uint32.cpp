@@ -178,12 +178,10 @@ void Uint32::bit(Bool& out, std::size_t i) const noexcept
 
 void Uint32::setBit(Bool v, std::size_t i) noexcept
 {
-    if (v.value())
-    {
+    if (v.value()) {
         data_ = data_ | (1u << i);
     }
-    else
-    {
+    else {
         data_ = data_ & ~(1u << i);
     }
     return;

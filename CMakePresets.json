@@ -13,7 +13,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "DESTINY_BUILD_TESTS": "ON",
         "DESTINY_BUILD_EXAMPLES": "OFF",
-        "DESTINY_BUILD_BENCHMARKS": "OFF"
+        "DESTINY_BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -34,7 +34,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "DESTINY_BUILD_TESTS": "ON",
         "DESTINY_BUILD_EXAMPLES": "OFF",
-        "DESTINY_BUILD_BENCHMARKS": "OFF"
+        "DESTINY_BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -55,7 +55,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "DESTINY_BUILD_TESTS": "ON",
         "DESTINY_BUILD_EXAMPLES": "OFF",
-        "DESTINY_BUILD_BENCHMARKS": "OFF"
+        "DESTINY_BUILD_BENCHMARKS": "ON"
       }
     },
     {
@@ -76,7 +76,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "DESTINY_BUILD_TESTS": "ON",
         "DESTINY_BUILD_EXAMPLES": "OFF",
-        "DESTINY_BUILD_BENCHMARKS": "OFF"
+        "DESTINY_BUILD_BENCHMARKS": "ON"
       }
     },
     {

@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.25)
 project(destiny VERSION 0.1.0 LANGUAGES CXX)
 
 option(BUILD_SHARED_LIBS        "Build shared libs instead of static" OFF)
-option(DESTINY_BUILD_TESTS      "Build unit tests (tests/)" ON)
+option(DESTINY_BUILD_TESTS      "Build unit tests (tests/)" OFF)
 option(DESTINY_BUILD_EXAMPLES   "Build example programs (examples/)" OFF)
-option(DESTINY_BUILD_BENCHMARKS "Build benchmark programs (benchmarks/)" OFF)
+option(DESTINY_BUILD_BENCHMARKS "Build benchmark programs (benchmarks/)" ON)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

@@ -65,12 +65,13 @@ if(DESTINY_TOOLCHAIN_ARCH STREQUAL "x86")
   set(CMAKE_C_COMPILER   "${DESTINY_GCC_X86_BIN}/gcc.exe")
   set(CMAKE_CXX_COMPILER "${DESTINY_GCC_X86_BIN}/g++.exe")
   set(VCPKG_TARGET_TRIPLET "x86-mingw-static")
-  # x86-built executables depend on libc++.dll / libunwind.dll (llvm-mingw
-  # runtime, referenced by the linker even when compiling with gcc). Copy
-  # them next to the output dir (bin/) after building so they can run.
+  # MinGW GCC x86 executables use the GCC runtime DLLs below. Copy them next
+  # to the output directory (bin/) after building so tests and benchmarks can
+  # run without relying on the caller's PATH.
   set(DESTINY_X86_RUNTIME_DLLS
-    "D:/cpp/toolchains/llvm-mingw/x86/bin/libc++.dll"
-    "D:/cpp/toolchains/llvm-mingw/x86/bin/libunwind.dll")
+    "${DESTINY_GCC_X86_BIN}/libgcc_s_dw2-1.dll"
+    "${DESTINY_GCC_X86_BIN}/libstdc++-6.dll"
+    "${DESTINY_GCC_X86_BIN}/libwinpthread-1.dll")
 else()
   if(NOT EXISTS "${DESTINY_GCC_X64_BIN}/g++.exe")
     message(FATAL_ERROR "x64 requested but compiler not found: ${DESTINY_GCC_X64_BIN}/g++.exe\nAvailable: ${DESTINY_GCC_AVAILABLE}")

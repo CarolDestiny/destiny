@@ -59,8 +59,7 @@ TEST(BoolTest, ShortCircuitEvaluation)
 {
     Bool t(true), f(false);
     int evalCount = 0;
-    auto sideEffect = [&evalCount](Bool) -> Bool
-    {
+    auto sideEffect = [&evalCount](Bool) -> Bool {
         ++evalCount;
         return Bool(true);
     };

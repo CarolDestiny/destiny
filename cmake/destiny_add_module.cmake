@@ -32,6 +32,32 @@ function(destiny_add_application)
   destiny_add_module_or_app("EXECUTABLE")
 endfunction()
 
+# Keep build artifacts in bin/, but launch every executable from the project
+# root when the surrounding CMake integration supports debugger metadata.
+function(_destiny_configure_executable_working_directory _dm_target)
+  if(CMAKE_VERSION VERSION_GREATER_EQUAL "4.0")
+    set_property(TARGET "${_dm_target}" PROPERTY
+      DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+  endif()
+  set_property(TARGET "${_dm_target}" PROPERTY
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+  set_property(TARGET "${_dm_target}" PROPERTY
+    XCODE_SCHEME_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endfunction()
+
+function(_destiny_copy_runtime_dlls _dm_target)
+  if(NOT DESTINY_X86_RUNTIME_DLLS)
+    return()
+  endif()
+  foreach(_dm_dll IN LISTS DESTINY_X86_RUNTIME_DLLS)
+    if(EXISTS "${_dm_dll}")
+      add_custom_command(TARGET "${_dm_target}" POST_BUILD
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+          "${_dm_dll}" "$<TARGET_FILE_DIR:${_dm_target}>")
+    endif()
+  endforeach()
+endfunction()
+
 function(destiny_add_module_or_app _dm_mode)
   # ---- 1. Module identity: path relative to source/ ----
   if(NOT DESTINY_SOURCE_ROOT)
@@ -72,6 +98,8 @@ function(destiny_add_module_or_app _dm_mode)
     if(_dm_mode STREQUAL "EXECUTABLE")
       # Application module: executable
       add_executable("${_dm_target}" ${_dm_sources})
+      _destiny_configure_executable_working_directory("${_dm_target}")
+      _destiny_copy_runtime_dlls("${_dm_target}")
       target_include_directories("${_dm_target}" PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/include")
       target_include_directories("${_dm_target}" PRIVATE
@@ -112,20 +140,13 @@ function(destiny_add_module_or_app _dm_mode)
       get_filename_component(_dm_testname "${_dm_test}" NAME_WE)
       set(_dm_test_target "${_dm_target}_test_${_dm_testname}")
       add_executable("${_dm_test_target}" "${_dm_test}")
+      _destiny_configure_executable_working_directory("${_dm_test_target}")
+      _destiny_copy_runtime_dlls("${_dm_test_target}")
       target_link_libraries("${_dm_test_target}" PRIVATE
         "${_dm_target}" GTest::gtest_main GTest::gmock)
       add_test(NAME "${_dm_test_target}" COMMAND "${_dm_test_target}")
-      # x86 build: copy runtime DLLs next to the exe (bin/), otherwise the
-      # exe fails at runtime with 0xc000007b (libc++ not found)
-      if(DESTINY_X86_RUNTIME_DLLS)
-        foreach(_dm_dll IN LISTS DESTINY_X86_RUNTIME_DLLS)
-          if(EXISTS "${_dm_dll}")
-            add_custom_command(TARGET "${_dm_test_target}" POST_BUILD
-              COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-                "${_dm_dll}" "${CMAKE_SOURCE_DIR}/bin/")
-          endif()
-        endforeach()
-      endif()
+      set_tests_properties("${_dm_test_target}" PROPERTIES
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
     endforeach()
   endif()
 
@@ -136,6 +157,8 @@ function(destiny_add_module_or_app _dm_mode)
       get_filename_component(_dm_exname "${_dm_ex}" NAME_WE)
       set(_dm_ex_target "${_dm_target}_example_${_dm_exname}")
       add_executable("${_dm_ex_target}" "${_dm_ex}")
+      _destiny_configure_executable_working_directory("${_dm_ex_target}")
+      _destiny_copy_runtime_dlls("${_dm_ex_target}")
       target_link_libraries("${_dm_ex_target}" PRIVATE "${_dm_target}")
     endforeach()
   endif()
@@ -147,6 +170,8 @@ function(destiny_add_module_or_app _dm_mode)
       get_filename_component(_dm_bname "${_dm_b}" NAME_WE)
       set(_dm_b_target "${_dm_target}_bench_${_dm_bname}")
       add_executable("${_dm_b_target}" "${_dm_b}")
+      _destiny_configure_executable_working_directory("${_dm_b_target}")
+      _destiny_copy_runtime_dlls("${_dm_b_target}")
       target_link_libraries("${_dm_b_target}" PRIVATE "${_dm_target}")
     endforeach()
   endif()

@@ -41,6 +41,22 @@ Dependencies: MinGW gcc 16.2, llvm-mingw clang 22.1, ninja, vcpkg
 ./build.sh gcc-x86         # choose preset (gcc-x64/gcc-x86/clang-x64/clang-x86)
 ```
 
+## Runtime working directory
+
+All executable targets are still written to `bin/`. When CTest or a CMake
+debug/run integration launches one of them, its working directory is the
+repository root, so relative paths such as `data/...` and `cache/...` resolve
+consistently.
+
+The working directory belongs to the process that launches an executable; it
+is not embedded in the `.exe`. When launching one manually, start it from the
+repository root:
+
+```powershell
+Set-Location D:\project\destiny
+.\bin\apps_destinyTest.exe
+```
+
 ## Formatting
 
 ```bash
@@ -55,3 +71,8 @@ find source -name "*.cpp" -o -name "*.hpp" | xargs clang-format -i
   `#include "destiny/<module path>/xxx.hpp"`
 - Namespace: `destiny::<module path>`
 - Applications: `destiny_add_application()` in `source/apps/<app>/`
+
+## Architecture
+
+- [Replay 追踪格式 v1（中文）](source/core/replay/docs/TRACE_FORMAT_V1.zh-CN.md)
+- [Replay trace format v1 (English)](source/core/replay/docs/TRACE_FORMAT_V1.md)

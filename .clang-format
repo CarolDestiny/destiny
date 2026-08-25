@@ -16,7 +16,20 @@ AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 
 # ---- 大括号与换行 ----
-BreakBeforeBraces: Allman         # 大括号独立成行
+# Custom 模式 + BraceWrapping：
+#   if/while/for 等控制语句大括号跟随（不换行，if (x) {）
+#   函数/类/命名空间大括号独立成行（Allman 风格）
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: Never      # if/while/for 大括号跟随
+  AfterFunction: true               # 函数体大括号独立成行
+  AfterClass: true                  # 类体大括号独立成行
+  AfterNamespace: true              # 命名空间大括号独立成行
+  BeforeElse: true                  # else 独立成行
+  BeforeCatch: true                 # catch 独立成行
+  AfterStruct: true
+  AfterEnum: true
+  AfterUnion: true
 AllowShortFunctionsOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Empty

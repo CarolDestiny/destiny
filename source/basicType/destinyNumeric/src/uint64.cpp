@@ -191,12 +191,10 @@ void Uint64::bit(Bool& out, std::size_t i) const noexcept
 
 void Uint64::setBit(Bool v, std::size_t i) noexcept
 {
-    if (v.value())
-    {
+    if (v.value()) {
         data_ = data_ | (1ull << i);
     }
-    else
-    {
+    else {
         data_ = data_ & ~(1ull << i);
     }
     return;
