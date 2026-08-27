@@ -1,10 +1,10 @@
-#include <cstdio>
+#include "destiny/basicType/time/time.hpp"
 #include <iostream>
-
-#include "../../../core/replay/src/boundMPSC.hpp"
+using namespace destiny;
 int main()
 {
-    destiny::core::replay::detail::BoundMPSC boundMPSC;
-
+    LocalZone localZone;
+    bool a = localZone.setZone("Asia/Shanghai");
+    std::cout << ZoneTime(UtcTime::now(),localZone).value()<< std::endl;
     return 0;
 }

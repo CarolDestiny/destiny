@@ -23,11 +23,11 @@ BreakBeforeBraces: Custom
 BraceWrapping:
   AfterControlStatement: Never      # if/while/for 大括号跟随
   AfterFunction: true               # 函数体大括号独立成行
-  AfterClass: true                  # 类体大括号独立成行
-  AfterNamespace: true              # 命名空间大括号独立成行
+  AfterClass: false                 # 类体大括号不独立成行
+  AfterNamespace: false             # 命名空间大括号不独立成行
   BeforeElse: true                  # else 独立成行
   BeforeCatch: true                 # catch 独立成行
-  AfterStruct: true
+  AfterStruct: false
   AfterEnum: true
   AfterUnion: true
 AllowShortFunctionsOnASingleLine: Empty
@@ -36,11 +36,13 @@ AllowShortBlocksOnASingleLine: Empty
 BreakBeforeBinaryOperators: NonAssignment
 BinPackArguments: true
 BinPackParameters: true
+AlwaysBreakTemplateDeclarations: Yes # 所有template后强制换行
 
 # ---- 命名空间与类 ----
 NamespaceIndentation: All         # 命名空间内容缩进
 AccessModifierOffset: -4          # public:/private: 与 class 对齐
 IndentCaseLabels: false           # case 不额外缩进，与 switch 对齐
+FixNamespaceComments: false       # namespace自动注释
 
 # ---- 指针、排序与杂项 ----
 PointerAlignment: Left            # int* p
