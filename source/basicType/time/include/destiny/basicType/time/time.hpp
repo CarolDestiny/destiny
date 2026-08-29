@@ -1,5 +1,4 @@
 #pragma once
-#include "time.hpp"
 #include <cstdint>
 #include <string>
 #include <type_traits>
@@ -40,8 +39,9 @@ namespace destiny {
         template <> struct scale<Hour> {  static constexpr std::int64_t value = 3'600; };
         template <> struct scale<Minute> { static constexpr std::int64_t value = 60; };
         template <> struct scale<Second> { static constexpr std::int64_t value = 1; };
-
         ; // clang-format on
+        template <AutoConvertDurationType T, AutoConvertDurationType U>
+        using ResType = std::conditional_t<(scale<T>::value < scale<U>::value), T, U>;
     }
 
     template <basicType::time::detail::DurationType T>
@@ -87,16 +87,18 @@ private:
     std::uint64_t value_{0};
 };
 
-#define DESTINY_BASICTYPE_TIME_AUTO_CLASS(NAME) \
-    class destiny::NAME {\
-    public:\
-        NAME() noexcept = default;\
-        ~NAME() noexcept = default;\
-        NAME(const NAME&) noexcept = default;\
-        NAME& operator=(const NAME&) noexcept = default;\
-        std::uint64_t value() const noexcept { return value_; };\
-    private:\
-        std::uint64_t value_{0};\
+#define DESTINY_BASICTYPE_TIME_AUTO_CLASS(NAME)                                                                        \
+    class destiny::NAME {                                                                                              \
+    public:                                                                                                            \
+        NAME() noexcept = default;                                                                                     \
+        ~NAME() noexcept = default;                                                                                    \
+        NAME(const NAME&) noexcept = default;                                                                          \
+        NAME& operator=(const NAME&) noexcept = default;                                                               \
+        NAME(std::uint64_t value) noexcept : value_{value} {}                                                          \
+        std::uint64_t value() const noexcept { return value_; };                                                       \
+                                                                                                                       \
+    private:                                                                                                           \
+        std::uint64_t value_{0};                                                                                       \
     }
 DESTINY_BASICTYPE_TIME_AUTO_CLASS(Year);
 DESTINY_BASICTYPE_TIME_AUTO_CLASS(Month);
@@ -108,5 +110,124 @@ DESTINY_BASICTYPE_TIME_AUTO_CLASS(Second);
 
 template <destiny::basicType::time::detail::DurationType T>
 class destiny::Duration {
-    
+public:
+    Duration() noexcept = default;
+    ~Duration() noexcept = default;
+    Duration(const Duration&) noexcept = default;
+    Duration(std::int64_t value) noexcept { value_ = value; }
+    Duration& operator=(const Duration&) noexcept = default;
+    std::int64_t value() const noexcept { return value_; }
+    Duration<Second> toSecond() const noexcept
+        requires destiny::basicType::time::detail::AutoConvertDurationType<T>
+    {
+        return Duration<Second>(value_ * destiny::basicType::time::detail::scale<T>::value);
+    }
+
+private:
+    std::int64_t value_{0};
 };
+
+template <destiny::basicType::time::detail::DurationType T>
+inline T operator+(const T& a, const destiny::Duration<T>& b) noexcept
+{
+    return T(a.value() + b.value());
+}
+
+template <destiny::basicType::time::detail::DurationType T>
+inline T operator+(const destiny::Duration<T>& a, const T& b) noexcept
+{
+    return T(a.value() + b.value());
+}
+
+template <destiny::basicType::time::detail::DurationType T>
+inline destiny::Duration<T> operator+(const destiny::Duration<T>& a, const destiny::Duration<T>& b) noexcept
+{
+    return destiny::Duration<T>(a.value() + b.value());
+}
+
+template <destiny::basicType::time::detail::DurationType T>
+inline T operator-(const T& a, const destiny::Duration<T>& b) noexcept
+{
+    return T(a.value() - b.value());
+}
+
+template <destiny::basicType::time::detail::DurationType T>
+inline T operator-(const destiny::Duration<T>& a, const T& b) noexcept
+{
+    return T(a.value() - b.value());
+}
+
+template <destiny::basicType::time::detail::DurationType T>
+inline destiny::Duration<T> operator-(const destiny::Duration<T>& a, const destiny::Duration<T>& b) noexcept
+{
+    return destiny::Duration<T>(a.value() - b.value());
+}
+
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::basicType::time::detail::ResType<T, U> operator+(const T& a, const destiny::Duration<U>& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total =
+        static_cast<std::int64_t>(a.value()) * destiny::basicType::time::detail::scale<T>::value + b.toSecond().value();
+    return resType(total / destiny::basicType::time::detail::scale<resType>::value);
+}
+
+; // clang-format off
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::basicType::time::detail::ResType<T, U>
+operator+(const destiny::Duration<T>& a, const U& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total =
+        a.toSecond().value() + static_cast<std::int64_t>(b.value()) * destiny::basicType::time::detail::scale<U>::value;
+    return resType(total / destiny::basicType::time::detail::scale<resType>::value);
+}
+; // clang-format on
+
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::Duration<destiny::basicType::time::detail::ResType<T, U>>
+operator+(const destiny::Duration<T>& a, const destiny::Duration<U>& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total = a.toSecond().value() + b.toSecond().value();
+    return destiny::Duration<resType>{total / destiny::basicType::time::detail::scale<resType>::value};
+}
+
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::basicType::time::detail::ResType<T, U> operator-(const T& a, const destiny::Duration<U>& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total =
+        static_cast<std::int64_t>(a.value()) * destiny::basicType::time::detail::scale<T>::value - b.toSecond().value();
+    return resType(total / destiny::basicType::time::detail::scale<resType>::value);
+}
+
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::basicType::time::detail::ResType<T, U> operator-(const destiny::Duration<T>& a, const U& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total =
+        a.toSecond().value() - static_cast<std::int64_t>(b.value()) * destiny::basicType::time::detail::scale<U>::value;
+    return resType(total / destiny::basicType::time::detail::scale<resType>::value);
+}
+
+template <destiny::basicType::time::detail::AutoConvertDurationType T,
+          destiny::basicType::time::detail::AutoConvertDurationType U>
+    requires(!std::is_same_v<T, U>)
+inline destiny::Duration<destiny::basicType::time::detail::ResType<T, U>>
+operator-(const destiny::Duration<T>& a, const destiny::Duration<U>& b) noexcept
+{
+    using resType = destiny::basicType::time::detail::ResType<T, U>;
+    const auto total = a.toSecond().value() - b.toSecond().value();
+    return destiny::Duration<resType>{total / destiny::basicType::time::detail::scale<resType>::value};
+}

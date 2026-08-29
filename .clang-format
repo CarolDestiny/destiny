@@ -30,7 +30,7 @@ BraceWrapping:
   AfterStruct: false
   AfterEnum: true
   AfterUnion: true
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: false
 AllowShortBlocksOnASingleLine: Empty
 BreakBeforeBinaryOperators: NonAssignment
