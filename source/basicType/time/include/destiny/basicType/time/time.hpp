@@ -231,3 +231,27 @@ operator-(const destiny::Duration<T>& a, const destiny::Duration<U>& b) noexcept
     const auto total = a.toSecond().value() - b.toSecond().value();
     return destiny::Duration<resType>{total / destiny::basicType::time::detail::scale<resType>::value};
 }
+
+class destiny::YearMonthDay {
+public:
+    YearMonthDay() noexcept = default;
+    ~YearMonthDay() noexcept = default;
+    YearMonthDay(const YearMonthDay&) noexcept = default;
+    YearMonthDay& operator=(const YearMonthDay&) noexcept = default;
+    YearMonthDay(std::uint64_t year, std::uint8_t month, std::uint8_t day) noexcept;
+    Year year() const noexcept;
+    Month month() const noexcept;
+    Day day() const noexcept;
+
+    YearMonthDay& operator+(const Duration<Year>& other) noexcept;
+    YearMonthDay& operator+(const Duration<Month>& other) noexcept;
+    YearMonthDay& operator+(const Duration<Day>& other) noexcept;
+    YearMonthDay& operator-(const Duration<Year>& other) noexcept;
+    YearMonthDay& operator-(const Duration<Month>& other) noexcept;
+    YearMonthDay& operator-(const Duration<Day>& other) noexcept;
+
+private:
+    std::uint64_t year_{0};
+    std::uint8_t month_{0};
+    std::uint8_t day_{0};
+};
