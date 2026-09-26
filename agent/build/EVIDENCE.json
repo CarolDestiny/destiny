@@ -1,0 +1,465 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-26",
+  "status": "passed-with-documented-environment-limits",
+  "source": {
+    "algorithm": "sha256-path-and-content",
+    "files": 339,
+    "digest": "06e94a96b816a91b9820432b505f8ac72a89f1e13a7fa342d9d5bce96c6a1582"
+  },
+  "regressions": [
+    {
+      "environment": "windows",
+      "report": "build/regression-windows-closure.json",
+      "sha256": "8693b246e8e32608906175d7860c6997866bf2947c6e2e2152b835d7428ef703",
+      "host": "Windows-11-10.0.26200-SP0",
+      "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+      "tests": 129,
+      "failures": 0,
+      "errors": 0,
+      "skipped": []
+    },
+    {
+      "environment": "linux",
+      "report": "build/regression-linux-closure.json",
+      "sha256": "93124ca848f8a97195bfb4f3c5db4be51965311844f2e148a998db00854f7c7f",
+      "host": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+      "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+      "tests": 129,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_missing_cpu_helper_runtime_is_unavailable_not_a_probe_bug (tests.build_system.test_probes.ProbeTests.test_missing_cpu_helper_runtime_is_unavailable_not_a_probe_bug)",
+          "reason": "Windows CPU-helper runtime staging"
+        },
+        {
+          "test": "test_program_starts_with_no_compiler_directory_on_path (tests.build_system.test_programs.ProgramTests.test_program_starts_with_no_compiler_directory_on_path)",
+          "reason": "Windows-only executable runtime staging"
+        }
+      ]
+    },
+    {
+      "environment": "minimum",
+      "report": "build/regression-minimum-closure.json",
+      "sha256": "416cddeaaaac38d04799a5ffd08ca1fb1c48334e148f8a3a6c84b81e52ea905d",
+      "host": "Windows-10-10.0.26200-SP0",
+      "python": "3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]",
+      "tests": 129,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_close_releases_tk_variables_on_the_owning_thread (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_compiler_window_renders_results_and_manual_controls (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_dialog_geometry_is_anchored_to_its_owner (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_new_compiler_scan_replaces_stale_availability (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_project_pages_load_and_save_without_rewriting_probe (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_rule_summary_refreshes_after_editing_selected_alias (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_saving_uses_a_snapshot_and_runs_validation_off_the_tk_thread (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_selected_cmake_reaches_reload_save_selection_and_probe_preview (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_visual_condition_editor_updates_readonly_preview (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        },
+        {
+          "test": "test_worker_completion_is_delivered_before_a_new_task_can_start (tests.build_system.test_gui.GuiSmokeTests)",
+          "reason": "Tk display is unavailable: No module named 'tkinter'"
+        }
+      ]
+    }
+  ],
+  "matrices": [
+    {
+      "report": "build/matrix-windows-closure.json",
+      "sha256": "6972a6e651abb8841a36365a32a2035e949d71fd03cc13ff49e8ca5660e54b86",
+      "profiles": [
+        {
+          "profile": "windows-gcc-x86-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "16.2.0",
+            "architecture": "x86",
+            "target": "i686-w64-mingw32",
+            "compiler_fingerprint": "a468ee11be14ceb5a14e027cd6cac598782aa1d3ab8e8ddedf2fbbb1b54ad49f"
+          }
+        },
+        {
+          "profile": "windows-gcc-x86-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "16.2.0",
+            "architecture": "x86",
+            "target": "i686-w64-mingw32",
+            "compiler_fingerprint": "a468ee11be14ceb5a14e027cd6cac598782aa1d3ab8e8ddedf2fbbb1b54ad49f"
+          }
+        },
+        {
+          "profile": "windows-gcc-x64-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "16.2.0",
+            "architecture": "x64",
+            "target": "x86_64-w64-mingw32",
+            "compiler_fingerprint": "e3cc4765bc06d3a92b3da7ce25e363ddf5d4c0121f5b7c9c7ff59663bf6caaf4"
+          }
+        },
+        {
+          "profile": "windows-gcc-x64-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "16.2.0",
+            "architecture": "x64",
+            "target": "x86_64-w64-mingw32",
+            "compiler_fingerprint": "e3cc4765bc06d3a92b3da7ce25e363ddf5d4c0121f5b7c9c7ff59663bf6caaf4"
+          }
+        },
+        {
+          "profile": "windows-clang-x86-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "22.1.8",
+            "architecture": "x86",
+            "target": "i686-w64-windows-gnu",
+            "compiler_fingerprint": "3b056c0152a1af509e8528c8361769eb687671637b2c7ea4dbef5edd6a3ab484"
+          }
+        },
+        {
+          "profile": "windows-clang-x86-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "22.1.8",
+            "architecture": "x86",
+            "target": "i686-w64-windows-gnu",
+            "compiler_fingerprint": "3b056c0152a1af509e8528c8361769eb687671637b2c7ea4dbef5edd6a3ab484"
+          }
+        },
+        {
+          "profile": "windows-clang-x64-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "22.1.8",
+            "architecture": "x64",
+            "target": "x86_64-w64-windows-gnu",
+            "compiler_fingerprint": "665be1b48bc6b4f0336ef6651183b42142ec2e49f10e3cfafe927ad0a4c50a79"
+          }
+        },
+        {
+          "profile": "windows-clang-x64-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "22.1.8",
+            "architecture": "x64",
+            "target": "x86_64-w64-windows-gnu",
+            "compiler_fingerprint": "665be1b48bc6b4f0336ef6651183b42142ec2e49f10e3cfafe927ad0a4c50a79"
+          }
+        }
+      ]
+    },
+    {
+      "report": "build/matrix-linux-closure.json",
+      "sha256": "20a7d5dad3ca726cf45074a360224282edeb327e4cffcf6790b30862d91d0683",
+      "profiles": [
+        {
+          "profile": "linux-gcc-x86-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "15.2.0",
+            "architecture": "x86",
+            "target": "x86_64-linux-gnu",
+            "compiler_fingerprint": "c3a59389633632e1dbd90c68c6f1141c084ef1008a34649efded9f6c04304cdc"
+          }
+        },
+        {
+          "profile": "linux-gcc-x86-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "15.2.0",
+            "architecture": "x86",
+            "target": "x86_64-linux-gnu",
+            "compiler_fingerprint": "c3a59389633632e1dbd90c68c6f1141c084ef1008a34649efded9f6c04304cdc"
+          }
+        },
+        {
+          "profile": "linux-gcc-x64-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "15.2.0",
+            "architecture": "x64",
+            "target": "x86_64-linux-gnu",
+            "compiler_fingerprint": "c3a59389633632e1dbd90c68c6f1141c084ef1008a34649efded9f6c04304cdc"
+          }
+        },
+        {
+          "profile": "linux-gcc-x64-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "gcc",
+            "version": "15.2.0",
+            "architecture": "x64",
+            "target": "x86_64-linux-gnu",
+            "compiler_fingerprint": "c3a59389633632e1dbd90c68c6f1141c084ef1008a34649efded9f6c04304cdc"
+          }
+        },
+        {
+          "profile": "linux-clang-x86-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "21.1.8",
+            "architecture": "x86",
+            "target": "i386-pc-linux-gnu",
+            "compiler_fingerprint": "7e3efc26ed26fdcbc5155b21ec72522a6f9acfa78eb500165417adeac7adfd37"
+          }
+        },
+        {
+          "profile": "linux-clang-x86-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "21.1.8",
+            "architecture": "x86",
+            "target": "i386-pc-linux-gnu",
+            "compiler_fingerprint": "7e3efc26ed26fdcbc5155b21ec72522a6f9acfa78eb500165417adeac7adfd37"
+          }
+        },
+        {
+          "profile": "linux-clang-x64-debug",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "21.1.8",
+            "architecture": "x64",
+            "target": "x86_64-pc-linux-gnu",
+            "compiler_fingerprint": "7e3efc26ed26fdcbc5155b21ec72522a6f9acfa78eb500165417adeac7adfd37"
+          }
+        },
+        {
+          "profile": "linux-clang-x64-release",
+          "status": "passed",
+          "checks": [
+            "compile-link",
+            "architecture",
+            "ctest-root",
+            "build-does-not-run",
+            "demo-run",
+            "bench-run",
+            "no-op-build"
+          ],
+          "toolchain": {
+            "family": "clang",
+            "version": "21.1.8",
+            "architecture": "x64",
+            "target": "x86_64-pc-linux-gnu",
+            "compiler_fingerprint": "7e3efc26ed26fdcbc5155b21ec72522a6f9acfa78eb500165417adeac7adfd37"
+          }
+        }
+      ]
+    }
+  ],
+  "clean_builds": [
+    {
+      "report": "build/clean-closure-windows.json",
+      "sha256": "baa0232f62bd85bab43ad1864144fef9079579931ecb1d02ee2b0103caa0bece",
+      "status": "passed",
+      "source_files": 0
+    },
+    {
+      "report": "build/clean-closure-linux.json",
+      "sha256": "ed70ac70ad5c75870ef5bc73a170839756e7be838ce548f3a93dff081233b676",
+      "status": "passed",
+      "source_files": 0
+    }
+  ],
+  "gui": {
+    "current_short_check": "build/gui-quick-closure.json",
+    "status": "passed",
+    "sha256": "8fb2c31e7eea0772fbe59b3cc5b5b233929dfe01ee7bb62636f00fb07c82cfd9",
+    "observation_scope": "Short, user-requested GUI closure check; not exhaustive interactive coverage",
+    "earlier_interactive_record": "build/gui-interaction-evidence.json",
+    "earlier_clion_record": "build/clion-validation-evidence.json"
+  },
+  "limits": [
+    "Real macOS acceptance is deferred by PLAN.md; adapters have fixture coverage.",
+    "CLion WSL toolchain/debugger launch was not observed; native WSL configure/build/CTest/terminal routes passed.",
+    "Embedded Python 3.10.11 lacks Tk; ten GUI cases were skipped there and exercised on Windows 3.14 and WSLg."
+  ],
+  "acceptance": {
+    "date": "2026-09-26",
+    "status": "complete-with-documented-environment-limits",
+    "requirements_checked": 19,
+    "phase_gates_checked": 6,
+    "audit_document": "agent/build/ACCEPTANCE.md",
+    "handoff_document": "agent/build/HANDOFF.md",
+    "final_pass": "Report hashes and current source fingerprint reverified; documentation-only reconciliation; no changed build behavior."
+  }
+}

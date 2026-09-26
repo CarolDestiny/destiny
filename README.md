@@ -1,78 +1,33 @@
-# destiny
+# destiny-compat
 
-A modular C++20 project built with CMake, supporting gcc/clang compilers
-across x86/x64, with four build presets.
+Native CMake/Ninja build infrastructure for a modular C++ project. The maintained source tree starts empty; add modules using the documented interfaces rather than copying legacy business code.
 
-## Directory layout
+## Entry points
 
-```
-destiny/
-├── CMakeLists.txt          # top-level build
-├── CMakePresets.json       # build presets (gcc/clang x x64/x86)
-├── build.sh                # unified build entry
-├── .clang-format           # code formatting config
-├── .gitignore
-├── vcpkg.json              # dependency manifest (gtest)
-├── bin/                    # build output (auto-generated)
-├── build/                  # CMake build dir (auto-generated)
-├── cache/                  # runtime cache
-├── data/                   # startup resources
-├── docs/                   # global docs
-├── thirdLib/               # third-party sources (vendored gtest)
-├── cmake/
-│   ├── destiny_add_module.cmake   # modular build engine
-│   └── toolchains/                # compiler toolchain config
-└── source/                 # module tree root
-    ├── define/             # macros & constants (header-only)
-    ├── iso/                # system compatibility layer
-    ├── core/               # core: memory allocation, logging
-    ├── basicType/          # basic types
-    ├── moreType/           # heavy types
-    └── apps/               # applications layer
+Requirements: CMake 3.25+, Ninja and Python 3.10+. Interactive GUIs require Tk. Windows supports MinGW GCC / LLVM-MinGW Clang and Linux supports GCC / Clang, targeting x86/x64; real macOS validation is deferred.
+
+```text
+python -B -m tool.find_compiler gui
+python -B -m tool.auto_define_config gui
 ```
 
-## Build
+The compiler tool validates local compiler pairs and writes ignored local presets. Use the selected presets directly with CMake or CLion. auto_define_config manages define-module counterparts and field/source-rule declarations; CMake generates headers and selects translation units.
 
-Dependencies: MinGW gcc 16.2, llvm-mingw clang 22.1, ninja, vcpkg
-(paths configured in `cmake/toolchains/`).
+## Documentation
 
-```bash
-./build.sh                 # default gcc-x64
-./build.sh gcc-x86         # choose preset (gcc-x64/gcc-x86/clang-x64/clang-x86)
+- [Build guide](agent/build/README.md)
+- [Runnable module-extension recipe](agent/build/EXTENDING.md)
+- [CMake, Python and JSON contracts](agent/build/INTERFACES.md)
+- [CLion and working-directory setup](agent/build/CLION.md)
+- [Acceptance and validation evidence](agent/build/VALIDATION.md)
+- [Git ownership and publication workflow](agent/build/GIT.md)
+
+Tests, vendored GoogleTest sources/license/provenance, shared presets and AI maintenance documentation belong in Git. Local compiler presets, caches, IDE state and generated build output do not. Empty directories are not stored by Git; module registration creates the maintained source paths when they are needed.
+
+## Verification
+
+```text
+python -B -m tests.build_system.verify --report build/regression.json
 ```
 
-## Runtime working directory
-
-All executable targets are still written to `bin/`. When CTest or a CMake
-debug/run integration launches one of them, its working directory is the
-repository root, so relative paths such as `data/...` and `cache/...` resolve
-consistently.
-
-The working directory belongs to the process that launches an executable; it
-is not embedded in the `.exe`. When launching one manually, start it from the
-repository root:
-
-```powershell
-Set-Location D:\project\destiny
-.\bin\apps_destinyTest.exe
-```
-
-## Formatting
-
-```bash
-find source -name "*.cpp" -o -name "*.hpp" | xargs clang-format -i
-```
-
-## Module conventions
-
-- A module = a directory + `CMakeLists.txt` (one line: `destiny_add_module()`)
-- Directory skeleton: `include/ src/ tests/ examples/ benchmarks/ docs/`
-- Public headers: `include/destiny/<module path>/`, consumers write
-  `#include "destiny/<module path>/xxx.hpp"`
-- Namespace: `destiny::<module path>`
-- Applications: `destiny_add_application()` in `source/apps/<app>/`
-
-## Architecture
-
-- [Replay 追踪格式 v1（中文）](source/core/replay/docs/TRACE_FORMAT_V1.zh-CN.md)
-- [Replay trace format v1 (English)](source/core/replay/docs/TRACE_FORMAT_V1.md)
+The existing accepted baseline is described in agent/build/EVIDENCE.json. Re-run affected checks after changing behavior; do not infer a new pass from historical reports.

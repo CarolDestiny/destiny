@@ -1,9 +1,6 @@
-# 第三方源码（googletest）保持原始换行符（LF），不做 CRLF 转换。
-# 第三方库源码跨平台一致，且避免每次提交的换行警告噪音。
-/thirdLib/googletest/** -text
+# Preserve audited bytes and vendored-source provenance across all platforms.
+# Keep text diffs; accept CRLF endings and existing final blank lines.
+* -text whitespace=blank-at-eol,space-before-tab,cr-at-eol,-blank-at-eof
 
-# Git 元文件保持 LF，避免自身被 autocrlf 转换时产生警告
-.gitattributes text eol=lf
-.gitignore text eol=lf
-
-# 其余文件（项目自身源码、配置）使用 Git 默认换行处理（autocrlf）。
+# Pinned golden-output fixtures contain intentional trailing spaces.
+thirdLib/googletest/googletest/test/*-golden-*.txt -whitespace
