@@ -11,7 +11,7 @@ Migration regressions passed at fingerprint `ed7d71fa42cdb21dca1a24ecfe1815fd5e1
 
 The sections below describe the accepted pre-migration baseline. Its fingerprint and 16-profile matrix remain historical evidence, not a claim that relocation leaves the byte/path fingerprint unchanged. EVIDENCE.json preserves the baseline separately and records the migration regressions at their own fingerprint.
 
-Clearing the root cache directory was requested but execution policy rejected both guarded and explicit-literal PowerShell deletion commands. No contents were removed and no alternate deletion mechanism was used. Manual cleanup is still required; the cached CMake 3.25, embedded Python, Tk runtime and formatter are disposable validation tools, not shipped program dependencies. After cleanup, the historical cached-runtime commands below require preparing those runtimes again. Keep program-owned cache usage separate from long-lived verification tools; normal verification can use installed tools and reports under ignored build.
+The root cache directory was confirmed empty in two final filesystem inspections, with the directory itself retained. The agent deletion commands had been rejected by execution policy; no alternate deletion mechanism was used, and the later empty state is not attributed to those rejected commands. the cached CMake 3.25, embedded Python, Tk runtime and formatter are disposable validation tools, not shipped program dependencies. After cleanup, the historical cached-runtime commands below require preparing those runtimes again. Keep program-owned cache usage separate from long-lived verification tools; normal verification can use installed tools and reports under ignored build.
 
 
 ## Pre-migration source and durable evidence

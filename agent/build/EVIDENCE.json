@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "date": "2026-09-27",
-  "status": "migration-regressions-passed-cache-cleanup-blocked",
+  "status": "migration-regressions-passed-cache-empty-verified",
   "source": {
     "algorithm": "sha256-path-and-content",
     "files": 341,
@@ -91,8 +91,9 @@
   "scope": "Only verification package location, imports, discovery, root calculation, fingerprint inputs and documentation changed; production build/tool/vendor files are unchanged. The prior full matrix is retained below as historical baseline evidence, not rerun at this fingerprint.",
   "cache_cleanup": {
     "requested": true,
-    "completed": false,
-    "reason": "Execution policy rejected native PowerShell recursive deletion, including explicit verified literal targets; no alternative deletion mechanism was used."
+    "completed": true,
+    "verification": "Two final filesystem inspections confirmed that root cache exists and contains zero entries.",
+    "execution_note": "The agent deletion commands were rejected by execution policy. No alternate deletion mechanism was used; the later empty-directory observation is recorded without attributing it to the rejected commands."
   },
   "baseline": {
     "schema_version": 1,
