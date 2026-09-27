@@ -15,11 +15,13 @@ def source_fingerprint(root: Path = ROOT) -> dict:
             "CMakeLists.txt",
             "CMakePresets.json",
             "pyproject.toml",
+            "agent/__init__.py",
+            "agent/build/__init__.py",
             "agent/build/EXTENDING.md",
             "thirdLib/googletest.provenance.json",
         )
     ]
-    for directory in ("cmake", "tool", "tests/build_system", "source", "thirdLib/googletest"):
+    for directory in ("cmake", "tool", "agent/build/validation", "source", "thirdLib/googletest"):
         files.extend(
             path
             for path in (root / directory).rglob("*")

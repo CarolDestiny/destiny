@@ -3,7 +3,12 @@
 Updated: 2026-09-26
 Status: V1 acceptance audit complete within the approved scope and recorded environment limits.
 
-Read PLAN.md first. Test names below refer to tests/build_system. A passing report is usable only if its source_before/source_after fingerprint matches the current implementation/test tree. Generated reports remain local under build; VALIDATION.md records outcomes and reproduction commands. Source inspection complements tests but does not turn a simulated observation into a real hardware pass.
+Read PLAN.md first. Test names below refer to agent/build/validation. A passing report is usable only if its source_before/source_after fingerprint matches the current implementation/test tree. Generated reports remain local under build; VALIDATION.md records outcomes and reproduction commands. Source inspection complements tests but does not turn a simulated observation into a real hardware pass.
+
+## Maintenance note (2026-09-27)
+
+Verification sources have moved to `agent/build/validation/`; the root tests directory was removed at the user's request. This map still describes the same v1 requirements. EVIDENCE.json distinguishes the accepted baseline reports from the post-migration regression reports, since a path/import relocation changes the source fingerprint. No manual GUI or full matrix rerun is implied by this layout-only change.
+
 
 ## Numbered acceptance checklist
 

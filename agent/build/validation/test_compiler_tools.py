@@ -6,7 +6,7 @@ import sys
 import threading
 import unittest
 
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 from tool.build_support.errors import BuildError
 from tool.build_support.compiler import compiler_fingerprint
 from tool.build_support.process import ProcessFailure, run_command

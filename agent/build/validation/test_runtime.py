@@ -2,7 +2,7 @@ from pathlib import Path
 import struct
 import unittest
 
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 from tool.build_support.errors import BuildError
 from tool.build_support.pe import read_pe
 from tool.build_support.runtime import resolve_dependencies, stage_runtime

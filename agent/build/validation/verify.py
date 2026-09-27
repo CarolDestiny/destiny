@@ -19,7 +19,7 @@ def main():
     args = parser.parse_args()
     before = source_fingerprint()
     suite = unittest.defaultTestLoader.discover(
-        str(ROOT / "tests/build_system"), top_level_dir=str(ROOT)
+        str(ROOT / "agent/build/validation"), top_level_dir=str(ROOT)
     )
     text = io.StringIO()
     result = unittest.TextTestRunner(stream=text, verbosity=2).run(suite)

@@ -27,7 +27,7 @@ Tests, vendored GoogleTest sources/license/provenance, shared presets and AI mai
 ## Verification
 
 ```text
-python -B -m tests.build_system.verify --report build/regression.json
+python -B -m agent.build.validation.verify --report build/regression.json
 ```
 
 The existing accepted baseline is described in agent/build/EVIDENCE.json. Re-run affected checks after changing behavior; do not infer a new pass from historical reports.

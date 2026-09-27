@@ -6,7 +6,7 @@ from tool.auto_define_config.errors import ConfigError
 from tool.auto_define_config.inventory import load_inventory
 from tool.build_support.storage import fingerprint
 from tool.auto_define_config.sync import Synchronizer
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 
 
 class InventorySyncTests(unittest.TestCase):

@@ -9,8 +9,8 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import Mock, patch
 
-from tests.build_system.support import Workspace
-from tests.build_system.test_compiler_tools import chain
+from agent.build.validation.support import Workspace
+from agent.build.validation.test_compiler_tools import chain
 from tool.auto_define_config.__main__ import main
 from tool.auto_define_config.editor import ProjectEditor
 from tool.auto_define_config.inventory import load_inventory

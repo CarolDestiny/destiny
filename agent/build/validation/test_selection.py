@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from tests.build_system.support import ROOT, Workspace
+from agent.build.validation.support import ROOT, Workspace
 
 
 def fact(value, type="boolean", status="available", unit=None):

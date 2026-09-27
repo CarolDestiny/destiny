@@ -8,7 +8,7 @@ from tool.build_support.storage import (
     read_json,
     replace_checked,
 )
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 
 
 class StorageTests(unittest.TestCase):

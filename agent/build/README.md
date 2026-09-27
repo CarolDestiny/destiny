@@ -46,8 +46,8 @@ python -B -m tool.find_compiler write-presets --input build/compiler-scan.json -
 python -B -m tool.auto_define_config inventory
 python -B -m tool.auto_define_config sync --dry-run
 python -B -m tool.auto_define_config check
-python -B -m tests.build_system.verify --report build/regression.json
-python -B -m tests.build_system.matrix --compiler-report build/compiler-scan.json --report build/matrix.json
+python -B -m agent.build.validation.verify --report build/regression.json
+python -B -m agent.build.validation.matrix --compiler-report build/compiler-scan.json --report build/matrix.json
 ```
 
 Use the GUI subcommands only on a Python installation with Tk. Headless inventory/probe/rule/compiler operations remain available without a display.

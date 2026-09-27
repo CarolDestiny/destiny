@@ -138,3 +138,15 @@ VALIDATION.md must distinguish real pass, failure, blocked environment, fixture-
 - [x] Final report lists changed files, checks run, remaining limitations and any required user action.
 
 This dated checklist records the initial v1 handoff, supported by ACCEPTANCE.md, VALIDATION.md, EVIDENCE.json and HANDOFF.md. For each future change, reapply these checks to that change; a previously accepted baseline is not proof that new behavior passes.
+
+## Validation package location
+
+Infrastructure tests live in `agent/build/validation/`, not in a root tests directory. Run `python -B -m agent.build.validation.verify --report build/regression.json` from the repository root. The temporary fixture directory remains ignored `build/verification`.
+
+Black's default directory exclusions include any directory named build. When a development installation of Black is available, use an explicit root-only exclusion so it checks these maintained tests:
+
+```text
+python -B -m black --exclude "^/(build|cache|thirdLib|\.git)/" tool agent/build/validation --check
+```
+
+The cached formatter is optional, not a runtime dependency. Do not mistake a formatter report saying no Python files were found for a successful check of the validation package.

@@ -229,8 +229,8 @@ Both GUIs keep long subprocess work off the Tk thread, bound subprocess duration
 ## 10. Verification entrypoints
 
 ```text
-python -B -m tests.build_system.verify --report build/regression.json
-python -B -m tests.build_system.matrix --compiler-report build/compilers.json --report build/matrix.json
+python -B -m agent.build.validation.verify --report build/regression.json
+python -B -m agent.build.validation.matrix --compiler-report build/compilers.json --report build/matrix.json
 ```
 
 The matrix is a test harness, not a new user build launcher. On Linux it can validate gcc/g++ and clang/clang++ from PATH when --compiler-report is omitted. It builds an isolated representative module graph in Debug/Release, checks generated macros and intrinsic implementations, runs CTest/demos/benchmarks, verifies binary architecture and no-op incremental behavior, and cleans its fixtures. Optional --family, --arch and --config narrow a diagnostic run; narrowed results must not be reported as full-matrix acceptance.

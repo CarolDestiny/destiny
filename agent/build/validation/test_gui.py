@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 from tool.auto_define_config.inventory import load_inventory
 from tool.auto_define_config.sync import Synchronizer
 from tool.find_compiler.model import Toolchain

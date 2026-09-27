@@ -11,7 +11,7 @@ The user explicitly approved replacing the failed legacy implementation with the
 ## What git add -A includes
 
 - Root shared CMake files, Git policies and README.
-- Maintained cmake/, tool/, tests/, source/ modules, and project data/docs when added.
+- Maintained cmake/, tool/, agent/build/validation/, source/ modules, and project data/docs when added. There is no root tests package.
 - Module CMake registrations, source_rules.json, probe.py and fields.json.
 - Vendored third-party source, licenses and provenance manifests.
 - AGENTS.md and agent/build maintenance and acceptance records.

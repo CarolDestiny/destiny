@@ -2,7 +2,7 @@ import json
 import os
 import unittest
 
-from tests.build_system.support import Workspace
+from agent.build.validation.support import Workspace
 from tool.auto_define_config.errors import ConfigError
 from tool.auto_define_config.inventory import load_inventory
 from tool.auto_define_config.probes import collect_facts

@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import unittest
 
-from tests.build_system.support import ROOT, Workspace
+from agent.build.validation.support import ROOT, Workspace
 from tool.auto_define_config.inventory import load_inventory
 from tool.auto_define_config.sync import Synchronizer
 

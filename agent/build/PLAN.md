@@ -31,6 +31,7 @@ Paths below are repository-relative unless absolute. Read `README.md` for naviga
 | `tool/auto_define_config/define/<module-relative-path>/` | A maintained probe.py and fields.json for each registered define module |
 | `thirdLib/googletest/` | Vendored GoogleTest source, license and pinned provenance |
 | Build directories | Facts JSON, generated headers, selection reports, intermediates and binaries |
+| `agent/build/validation/` | Infrastructure regression tests and verification harnesses; no root tests directory |
 | `agent/build/` | Plan, AI maintenance instructions, implementation references and validation evidence |
 
 There are two GUI entrypoints: find_compiler and auto_define_config. The latter contains both Source Rules and Define / Probes pages; do not introduce a third standalone probe or rule-editor application. Earlier tentative tool directory names are superseded.

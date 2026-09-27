@@ -3,13 +3,24 @@
 Updated: 2026-09-26
 Status: V1 acceptance complete within PLAN.md scope and the environment limits recorded below.
 
-## Current source and durable evidence
+## Layout migration and cache cleanup (2026-09-27)
+
+The user requested that infrastructure verification live under agent/build rather than a root tests directory. The maintained package is now `agent.build.validation`, located at `agent/build/validation/`. Imports, unittest discovery, repository-root resolution, fingerprint inputs and documented commands were migrated together; production CMake/Python behavior is unchanged.
+
+Migration regressions passed at fingerprint `ed7d71fa42cdb21dca1a24ecfe1815fd5e1354add30632684b6b9aa99a05f80b`: Windows 129 passed, WSL 127 passed with two Windows-only skips, and the minimum environment 119 passed with ten missing-Tk skips. Report identities are in EVIDENCE.json. No manual GUI or full 16-profile rerun was performed.
+
+The sections below describe the accepted pre-migration baseline. Its fingerprint and 16-profile matrix remain historical evidence, not a claim that relocation leaves the byte/path fingerprint unchanged. EVIDENCE.json preserves the baseline separately and records the migration regressions at their own fingerprint.
+
+Clearing the root cache directory was requested but execution policy rejected both guarded and explicit-literal PowerShell deletion commands. No contents were removed and no alternate deletion mechanism was used. Manual cleanup is still required; the cached CMake 3.25, embedded Python, Tk runtime and formatter are disposable validation tools, not shipped program dependencies. After cleanup, the historical cached-runtime commands below require preparing those runtimes again. Keep program-owned cache usage separate from long-lived verification tools; normal verification can use installed tools and reports under ignored build.
+
+
+## Pre-migration source and durable evidence
 
 `EVIDENCE.json` records the exact source fingerprint, regression outcomes/skips, all 16 matrix profiles, toolchain identities and hashes of the local reports. The fingerprint includes implementation, tests, vendored sources and the runnable EXTENDING.md recipe.
 
-Current fingerprint: `06e94a96b816a91b9820432b505f8ac72a89f1e13a7fa342d9d5bce96c6a1582` (339 files).
+Pre-migration baseline fingerprint: `06e94a96b816a91b9820432b505f8ac72a89f1e13a7fa342d9d5bce96c6a1582` (339 files).
 
-Every closure report below has identical before/after fingerprints matching this tree. Reports from earlier increments are historical, not substitutes for these results.
+Every closure report below has identical before/after fingerprints matching the pre-migration baseline, not the relocated verification package. Reports from earlier increments are historical, not substitutes for these results.
 
 ## Regression results
 
@@ -24,20 +35,20 @@ The WSL skipped cases are executable DLL staging and missing CPU-helper runtime 
 Reproduction:
 
 ```text
-python -B -m tests.build_system.verify --report build/regression-windows-closure.json
+python -B -m agent.build.validation.verify --report build/regression-windows-closure.json
 ```
 
 Minimum version, PowerShell (only the current process environment changes):
 
 ```powershell
 $env:PATH="D:\project\destiny-compat\cache\cmake-3.25\cmake\data\bin;$env:PATH"
-.\cache\python-3.10\python.exe -B -m tests.build_system.verify --report build/regression-minimum-closure.json
+.\cache\python-3.10\python.exe -B -m agent.build.validation.verify --report build/regression-minimum-closure.json
 ```
 
 WSLg, from the repository root:
 
 ```text
-wsl -d Ubuntu -- env PYTHONPATH=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/python3.14:/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/python3.14/lib-dynload LD_LIBRARY_PATH=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/x86_64-linux-gnu TCL_LIBRARY=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/share/tcltk/tcl8.6 TK_LIBRARY=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/share/tcltk/tk8.6 python3 -B -m tests.build_system.verify --report build/regression-linux-closure.json
+wsl -d Ubuntu -- env PYTHONPATH=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/python3.14:/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/python3.14/lib-dynload LD_LIBRARY_PATH=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/lib/x86_64-linux-gnu TCL_LIBRARY=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/share/tcltk/tcl8.6 TK_LIBRARY=/mnt/d/project/destiny-compat/cache/wsl-tk/runtime/usr/share/tcltk/tk8.6 python3 -B -m agent.build.validation.verify --report build/regression-linux-closure.json
 ```
 
 The cache paths are local verification aids, not delivered runtime requirements. All delivered Python uses the standard library; interactive GUI use requires a Python installation with Tk.
@@ -47,8 +58,8 @@ The cache paths are local verification aids, not delivered runtime requirements.
 All eight Windows and eight WSL profiles passed independently: GCC/Clang x86/x64, each Debug/Release. Windows used MinGW GCC 16.2.0 and LLVM-MinGW Clang 22.1.8; WSL used GCC 15.2.0 and Clang 21.1.8.
 
 ```text
-python -B -m tests.build_system.matrix --compiler-report build/compiler-scan-context-audit.json --report build/matrix-windows-closure.json
-wsl -d Ubuntu -- python3 -B -m tests.build_system.matrix --report build/matrix-linux-closure.json
+python -B -m agent.build.validation.matrix --compiler-report build/compiler-scan-context-audit.json --report build/matrix-windows-closure.json
+wsl -d Ubuntu -- python3 -B -m agent.build.validation.matrix --report build/matrix-linux-closure.json
 ```
 
 The shared scenario compiles and links real platform/CPU/memory modules, generates headers, selects intrinsic implementations, inspects output architecture, runs CTest/demo/bench, asserts project-root resources/current directory, and verifies a no-op build does not reconfigure, rewrite headers or rebuild objects. Ordinary Build is checked not to execute project programs or test discovery. Windows programs also run with compiler directories removed from PATH.

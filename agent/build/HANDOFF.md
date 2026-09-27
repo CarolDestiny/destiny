@@ -3,6 +3,11 @@
 Completed: 2026-09-26
 Scope: The approved PLAN.md, including its original exclusions and explicit environment-verification limits.
 
+## Subsequent maintenance: verification package migration
+
+On 2026-09-27 the user requested moving the root tests package to `agent/build/validation/` and emptying root `cache/`. Run verification with `python -B -m agent.build.validation.verify --report build/regression.json`; the matrix entrypoint is `python -B -m agent.build.validation.matrix`. Root tests no longer exists. The v1 snapshot below is historical; EVIDENCE.json records the migration separately. The migration regressions passed in all three environments. Cache deletion was rejected by execution policy; its contents remain local and ignored and require manual cleanup. No alternative deletion mechanism was used. After manual cleanup, prepare optional validation runtimes again only when needed.
+
+
 ## Delivered
 
 - Native CMake/Ninja module discovery, extensible strict layer graph, per-module public/implementation C++ minima, short maintained include trees and target-local forwarding.

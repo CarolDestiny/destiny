@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import unittest
 
-from tests.build_system.support import ROOT, Workspace
+from agent.build.validation.support import ROOT, Workspace
 from tool.auto_define_config.errors import ConfigError
 from tool.auto_define_config.inventory import load_inventory
 

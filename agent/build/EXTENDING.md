@@ -194,7 +194,7 @@ Validate focused tests first, then the full regression and applicable real compi
 The regression reads the nine `File:` code blocks above, scaffolds the missing define counterpart, builds those exact files, checks observations/macros/selection, and executes the demo with `cmake -E chdir` from the binary directory. It then disables the declared user option and verifies the fallback. Nothing is added to the checkout's maintained source tree.
 
 ```text
-python -B -m unittest tests.build_system.test_extension_recipe -v
+python -B -m unittest agent.build.validation.test_extension_recipe -v
 ```
 
 The full verification command also includes this test. Source fingerprints include this recipe document so the recorded result refers to the actual example, not merely similar test code.
