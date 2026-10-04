@@ -1,0 +1,74 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "gcc-x64-debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "gcc-x64-release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "gcc-x86-debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x86-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "gcc-x86-release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/gcc-x86-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "clang-x64-debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "clang-x64-release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x64-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "clang-x86-debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x86-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "clang-x86-release",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/clang-x86-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}
