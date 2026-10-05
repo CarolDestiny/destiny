@@ -8,6 +8,6 @@ namespace destiny::define::platform {
     static constexpr bool macos = DESTINY_CMAKE_DEFINE_PLATFORM_MACOS;
 }
 
-#define DESTINY_DEFINE_PLATFORM_WINDOWS ::destiny::define::platform::windows
-#define DESTINY_DEFINE_PLATFORM_LINUX ::destiny::define::platform::linux
-#define DESTINY_DEFINE_PLATFORM_MACOS ::destiny::define::platform::macos
+#define DESTINY_DEFINE_PLATFORM_WINDOWS DESTINY_CMAKE_DEFINE_PLATFORM_WINDOWS
+#define DESTINY_DEFINE_PLATFORM_LINUX DESTINY_CMAKE_DEFINE_PLATFORM_LINUX
+#define DESTINY_DEFINE_PLATFORM_MACOS DESTINY_CMAKE_DEFINE_PLATFORM_MACOS

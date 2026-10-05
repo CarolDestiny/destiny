@@ -5,4 +5,4 @@ set_target_properties(
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED ON
 )
-target_link_libraries(test PRIVATE destiny_define_platform)
+target_link_libraries(test PRIVATE destiny_core_cpuAlloc)
