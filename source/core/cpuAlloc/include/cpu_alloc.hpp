@@ -9,8 +9,5 @@ namespace destiny::core::cpu_alloc {
 }
 
 namespace destiny {
-    using core::cpu_alloc::BestPerformanceCpuCore;
-    using core::cpu_alloc::BestEfficiencyCpuCore;
-    using core::cpu_alloc::alloc;
-    using core::cpu_alloc::dealloc;
+
 }

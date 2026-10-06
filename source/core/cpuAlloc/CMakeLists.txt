@@ -2,6 +2,7 @@ add_library(
         destiny_core_cpuAlloc
         STATIC
         "src/onload.cpp"
+        "src/unload.cpp"
         "src/best_efficiency_cpu_core.cpp"
 )
 
@@ -19,3 +20,4 @@ target_include_directories(destiny_core_cpuAlloc PUBLIC
 )
 
 target_link_libraries(destiny_core_cpuAlloc PRIVATE destiny_define_platform)
+target_link_libraries(destiny_core_cpuAlloc PRIVATE destiny_define_cpu)

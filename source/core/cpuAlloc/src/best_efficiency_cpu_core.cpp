@@ -2,18 +2,12 @@
 #include "destiny/core/cpuAlloc/best_efficiency_cpu_core.hpp"
 
 bool destiny::core::cpu_alloc::alloc(BestEfficiencyCpuCore& bestEfficiencyCpuCore) noexcept {
-    bestEfficiencyCpuCore.cpuCore_ = new detail::CpuCore();
-    const auto cpuCore = (detail::CpuCore*)bestEfficiencyCpuCore.cpuCore_;
-    cpuCore->create();
+    bestEfficiencyCpuCore.cpuCore_ = (void*)(&(detail::cpuCore_buffer[0]));
     return true;
 }
 
 void destiny::core::cpu_alloc::dealloc(BestEfficiencyCpuCore& bestEfficiencyCpuCore) noexcept {
-    const auto cpuCore = (detail::CpuCore*)bestEfficiencyCpuCore.cpuCore_;
-    cpuCore->stop_set();
-    cpuCore->function_set(nullptr);
-    cpuCore->wait(10000);
-    cpuCore->destroy();
+    // TODO: safe function
     return;
 }
 
