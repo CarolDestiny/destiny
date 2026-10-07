@@ -1,13 +1,13 @@
 #pragma once
 
-namespace destiny::core::cpu_alloc {
+namespace destiny::core::cpu_manager {
     class BestEfficiencyCpuCore;
 
     bool alloc(BestEfficiencyCpuCore& bestEfficiencyCpuCore) noexcept;
     void dealloc(BestEfficiencyCpuCore& bestEfficiencyCpuCore) noexcept;
 };
 
-class destiny::core::cpu_alloc::BestEfficiencyCpuCore {
+class destiny::core::cpu_manager::BestEfficiencyCpuCore {
 public:
     BestEfficiencyCpuCore() noexcept = default;
     ~BestEfficiencyCpuCore() noexcept = default;

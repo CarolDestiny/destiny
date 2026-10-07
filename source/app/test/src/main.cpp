@@ -1,8 +1,8 @@
 #include <iostream>
 #include <windows.h>
 
-#include "destiny/core/cpuAlloc/cpu_alloc.hpp"
-#include "destiny/core/cpuAlloc/best_efficiency_cpu_core.hpp"
+#include "destiny/core/cpuManager/cpu_manager.hpp"
+#include "destiny/core/cpuManager/best_efficiency_cpu_core.hpp"
 
 using namespace std;
 
@@ -12,12 +12,12 @@ static void function1() noexcept {
 }
 
 int main() {
-    destiny::core::cpu_alloc::onload();
-    destiny::core::cpu_alloc::BestEfficiencyCpuCore cpuCore;
-    destiny::core::cpu_alloc::alloc(cpuCore);
+    destiny::core::cpu_manager::onload();
+    destiny::core::cpu_manager::BestEfficiencyCpuCore cpuCore;
+    destiny::core::cpu_manager::alloc(cpuCore);
     cpuCore.function_set(function1);
     Sleep(1000);
-    destiny::core::cpu_alloc::dealloc(cpuCore);
-    destiny::core::cpu_alloc::unload();
+    destiny::core::cpu_manager::dealloc(cpuCore);
+    destiny::core::cpu_manager::unload();
     return 0;
 }

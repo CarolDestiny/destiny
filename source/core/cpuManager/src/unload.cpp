@@ -4,7 +4,7 @@ static void function_null() {
     return;
 }
 
-void destiny::core::cpu_alloc::unload() noexcept {
+void destiny::core::cpu_manager::unload() noexcept {
     for (int i=0;i<destiny::define::cpu::logical_core_number;i++) {
         detail::cpuCore_buffer[i].stop_set();
     }

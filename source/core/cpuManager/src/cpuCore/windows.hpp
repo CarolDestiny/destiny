@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <atomic>
 
-namespace destiny::core::cpu_alloc::detail {
+namespace destiny::core::cpu_manager::detail {
     class CpuCore {
     public:
         CpuCore() noexcept = default;
@@ -32,7 +32,7 @@ namespace destiny::core::cpu_alloc::detail {
     };
 }
 
-inline bool destiny::core::cpu_alloc::detail::CpuCore::create() noexcept {
+inline bool destiny::core::cpu_manager::detail::CpuCore::create() noexcept {
     hThread_ = CreateThread(
         NULL,
         0,
@@ -47,12 +47,12 @@ inline bool destiny::core::cpu_alloc::detail::CpuCore::create() noexcept {
     return true;
 }
 
-inline void destiny::core::cpu_alloc::detail::CpuCore::stop_set() noexcept {
+inline void destiny::core::cpu_manager::detail::CpuCore::stop_set() noexcept {
     can_stop_.store(true,std::memory_order_release);
     return;
 }
 
-inline bool destiny::core::cpu_alloc::detail::CpuCore::wait(unsigned int time_ms) noexcept {
+inline bool destiny::core::cpu_manager::detail::CpuCore::wait(unsigned int time_ms) noexcept {
     const DWORD result = WaitForSingleObject(hThread_,time_ms);
     if (result == WAIT_OBJECT_0) {
         return true;
@@ -60,18 +60,18 @@ inline bool destiny::core::cpu_alloc::detail::CpuCore::wait(unsigned int time_ms
     return false;
 }
 
-inline void destiny::core::cpu_alloc::detail::CpuCore::destroy() noexcept {
+inline void destiny::core::cpu_manager::detail::CpuCore::destroy() noexcept {
     CloseHandle(hThread_);
     hThread_ = NULL;
 }
 
-inline void destiny::core::cpu_alloc::detail::CpuCore::function_set(void (*function)()) noexcept {
+inline void destiny::core::cpu_manager::detail::CpuCore::function_set(void (*function)()) noexcept {
     function_.store(function,std::memory_order_release);
     function_.notify_one();
     return;
 }
 
-inline DWORD destiny::core::cpu_alloc::detail::CpuCore::win_thread_function_(LPVOID lpParameter) {
+inline DWORD destiny::core::cpu_manager::detail::CpuCore::win_thread_function_(LPVOID lpParameter) {
     const CpuCore* that = (CpuCore*)lpParameter;
     void (*function)(void) = nullptr;
     while (true) {
