@@ -45,11 +45,8 @@ target_include_directories(
         $<BUILD_INTERFACE:${DESTINY_INCLUDE_ROOT}>
 )
 
-file(MAKE_DIRECTORY "${DESTINY_INCLUDE_ROOT}/destiny/define/compiler")
-
-file(
-        CREATE_LINK
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/compiler.hpp"
-        "${DESTINY_INCLUDE_ROOT}/destiny/define/compiler/compiler.hpp"
-        SYMBOLIC
+destiny_map_headers(
+        destiny_define_compiler
+        "define/compiler"
+        compiler.hpp
 )

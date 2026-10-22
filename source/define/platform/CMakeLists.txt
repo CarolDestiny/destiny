@@ -26,11 +26,8 @@ target_include_directories(
         $<BUILD_INTERFACE:${DESTINY_INCLUDE_ROOT}>
 )
 
-file(MAKE_DIRECTORY "${DESTINY_INCLUDE_ROOT}/destiny/define/platform")
-
-file(
-        CREATE_LINK
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/platform.hpp"
-        "${DESTINY_INCLUDE_ROOT}/destiny/define/platform/platform.hpp"
-        SYMBOLIC
+destiny_map_headers(
+        destiny_define_platform
+        "define/platform"
+        platform.hpp
 )

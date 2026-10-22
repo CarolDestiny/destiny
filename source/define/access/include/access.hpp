@@ -1,0 +1,5 @@
+#pragma once
+
+#define DESTINY_DEFINE_ACCESS_PUBLIC public:
+#define DESTINY_DEFINE_ACCESS_PROTECTED protected:
+#define DESTINY_DEFINE_ACCESS_PRIVATE private:

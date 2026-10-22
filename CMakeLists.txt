@@ -26,8 +26,18 @@ function(destiny_add_executable target_name)
     )
 endfunction()
 
-function(destiny_map_headers module_path)
+function(destiny_map_headers target module_path)
+    get_target_property(target_type ${target} TYPE)
+    if(target_type STREQUAL "INTERFACE_LIBRARY")
+        set(source_scope INTERFACE)
+    else()
+        set(source_scope PRIVATE)
+    endif()
+
     foreach(header IN LISTS ARGN)
+        set(source_header
+                "${CMAKE_CURRENT_SOURCE_DIR}/include/${header}"
+        )
         set(destination
                 "${DESTINY_INCLUDE_ROOT}/destiny/${module_path}/${header}"
         )
@@ -35,11 +45,22 @@ function(destiny_map_headers module_path)
         get_filename_component(directory "${destination}" DIRECTORY)
         file(MAKE_DIRECTORY "${directory}")
 
-        file(CREATE_LINK
-                "${CMAKE_CURRENT_SOURCE_DIR}/include/${header}"
-                "${destination}"
-                SYMBOLIC
+        # Remove the old link before writing a forwarding header.
+        if(IS_SYMLINK "${destination}")
+            file(REMOVE "${destination}")
+            if(IS_SYMLINK "${destination}")
+                message(FATAL_ERROR "Cannot replace header symlink: ${destination}")
+            endif()
+        endif()
+
+        file(CONFIGURE
+                OUTPUT "${destination}"
+                CONTENT "#pragma once\n#include \"${source_header}\"\n"
+                @ONLY
+                NEWLINE_STYLE UNIX
         )
+
+        target_sources(${target} ${source_scope} "${source_header}")
     endforeach()
 endfunction()
 

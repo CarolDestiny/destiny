@@ -1,0 +1,186 @@
+---
+# 基于 Google C++ 风格指南的 clang-format 配置
+# 版本: clang-format 17
+BasedOnStyle: Google
+
+# 语言设置
+Language: Cpp
+Standard: c++20
+
+# 缩进设置
+IndentWidth: 8
+TabWidth: 8
+UseTab: Never
+ContinuationIndentWidth: 8
+ConstructorInitializerIndentWidth: 8
+
+# 列宽限制
+ColumnLimit: 0
+
+# 访问修饰符
+AccessModifierOffset: -8
+
+# 对齐选项
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: Align
+AlignTrailingComments: true
+
+# 允许选项
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: false
+
+# 二进制操作符
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations: Yes
+
+# 二进制操作符换行
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBinaryOperators: None
+
+# 大括号换行
+BraceWrapping:
+  AfterCaseLabel: false
+  AfterClass: false
+  AfterControlStatement: Always
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: false
+  AfterStruct: false
+  AfterUnion: true
+  AfterExternBlock: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: false
+  BeforeWhile: true
+  IndentBraces: false
+  SplitEmptyFunction: true
+  SplitEmptyRecord: true
+  SplitEmptyNamespace: true
+
+BreakBeforeBraces: Custom
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakInheritanceList: BeforeColon
+BreakStringLiterals: true
+
+# 注释选项
+CommentPragmas: '^ IWYU pragma:'
+ReflowComments: true
+
+# 构造函数初始化列表
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+Cpp11BracedListStyle: true
+
+# 派生行继续
+DeriveLineEnding: true
+DerivePointerAlignment: false
+
+# 空行
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: LogicalBlock
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 2
+# 函数/类等定义块之间不强制插入或删除空行，保持原样
+SeparateDefinitionBlocks: Leave
+
+# 实验性功能
+ExperimentalAutoDetectBinPacking: false
+
+# 修复命名空间注释
+FixNamespaceComments: false
+
+# Include 排序
+IncludeBlocks: Regroup
+IncludeCategories:
+  # 项目内部头文件（相对路径）
+  - Regex:           '^".*\.hpp"$'
+    Priority:        1
+    SortPriority:    1
+  # 项目内部头文件（destiny 命名空间）
+  - Regex:           '^<destiny/'
+    Priority:        2
+    SortPriority:    2
+  # C++ 标准库
+  - Regex:           '^<[a-z_]+>$'
+    Priority:        3
+    SortPriority:    3
+  # 其他系统/第三方库
+  - Regex:           '^<.*'
+    Priority:        4
+    SortPriority:    4
+
+IncludeIsMainRegex: '([-_](test|unittest))?$'
+IncludeIsMainSourceRegex: ''
+
+# 缩进选项
+IndentCaseBlocks: false
+IndentCaseLabels: true
+IndentExternBlock: AfterExternBlock
+IndentGotoLabels: true
+IndentPPDirectives: None
+IndentRequiresClause: false
+IndentWrappedFunctionNames: false
+
+# Lambda 表达式
+LambdaBodyIndentation: Signature
+
+# 命名空间
+NamespaceIndentation: All
+CompactNamespaces: false
+
+# 指针和引用对齐
+PointerAlignment: Left
+ReferenceAlignment: Pointer
+
+# 预处理器
+PPIndentWidth: -1
+
+# 限定符
+QualifierAlignment: Leave
+
+# 空格选项
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: true
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: -1
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# 排序选项
+SortIncludes: CaseSensitive
+SortUsingDeclarations: true
+
+# 其他选项
+InsertNewlineAtEOF: true
+LineEnding: LF

@@ -1,8 +1,8 @@
 #pragma once
 
 namespace destiny::core::cpu_manager {
-    class BestPerformanceCpuCore;
+        class BestPerformanceCpuCore;
 
-    bool alloc(BestPerformanceCpuCore& bestPerformanceCpuCore) noexcept;
-    void dealloc(BestPerformanceCpuCore& bestPerformanceCpuCore) noexcept;
+        bool alloc(BestPerformanceCpuCore& bestPerformanceCpuCore) noexcept;
+        void dealloc(BestPerformanceCpuCore& bestPerformanceCpuCore) noexcept;
 };

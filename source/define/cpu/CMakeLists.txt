@@ -1,3 +1,17 @@
+add_library(destiny_define_cpu INTERFACE)
+
+target_include_directories(
+        destiny_define_cpu
+        INTERFACE
+        $<BUILD_INTERFACE:${DESTINY_INCLUDE_ROOT}>
+)
+
+destiny_map_headers(
+        destiny_define_cpu
+        "define/cpu"
+        cpu.hpp
+)
+
 execute_process(
         COMMAND
         python
@@ -12,20 +26,3 @@ execute_process(
 if(NOT PYTHON_RESULT EQUAL 0)
     message(FATAL_ERROR "Python failed:\n${PYTHON_ERROR}")
 endif()
-
-add_library(destiny_define_cpu INTERFACE)
-
-target_include_directories(
-        destiny_define_cpu
-        INTERFACE
-        $<BUILD_INTERFACE:${DESTINY_INCLUDE_ROOT}>
-)
-
-file(MAKE_DIRECTORY "${DESTINY_INCLUDE_ROOT}/destiny/define/cpu")
-
-file(
-        CREATE_LINK
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/cpu.hpp"
-        "${DESTINY_INCLUDE_ROOT}/destiny/define/cpu/cpu.hpp"
-        SYMBOLIC
-)
