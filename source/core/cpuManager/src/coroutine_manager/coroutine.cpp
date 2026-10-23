@@ -33,6 +33,11 @@ uint32_t destiny::core::cpu_manager::CoroutineBase::get_estimate_next_cycle() co
         return estimate_next_cycle_;
 }
 
+destiny::core::cpu_manager::CoroutineBase::Priority destiny::core::cpu_manager::CoroutineBase::get_priority() const noexcept
+{
+        return priority_;
+}
+
 void*& destiny::core::cpu_manager::CoroutineBase::slot0() noexcept
 {
         return slots_[0];
@@ -54,24 +59,14 @@ void*& destiny::core::cpu_manager::CoroutineBase::slot3() noexcept
 
 void destiny::core::cpu_manager::CoroutineUrgent::set_priority(Priority priority) noexcept
 {
-        priority_ = priority;
+        priority_ = (CoroutineBase::Priority)priority;
         return;
-}
-
-destiny::core::cpu_manager::CoroutineUrgent::Priority destiny::core::cpu_manager::CoroutineUrgent::get_priority() const noexcept
-{
-        return priority_;
 }
 
 void destiny::core::cpu_manager::CoroutinePeriodic::set_priority(Priority priority) noexcept
 {
-        priority_ = priority;
+        priority_ = (CoroutineBase::Priority)priority;
         return;
-}
-
-destiny::core::cpu_manager::CoroutinePeriodic::Priority destiny::core::cpu_manager::CoroutinePeriodic::get_priority() const noexcept
-{
-        return priority_;
 }
 
 void destiny::core::cpu_manager::CoroutinePeriodic::set_duration(uint32_t duration) noexcept
@@ -88,11 +83,6 @@ uint32_t destiny::core::cpu_manager::CoroutinePeriodic::get_duration() const noe
 
 void destiny::core::cpu_manager::CoroutineRegular::set_priority(Priority priority) noexcept
 {
-        priority_ = priority;
+        priority_ = (CoroutineBase::Priority)priority;
         return;
-}
-
-destiny::core::cpu_manager::CoroutineRegular::Priority destiny::core::cpu_manager::CoroutineRegular::get_priority() const noexcept
-{
-        return priority_;
 }

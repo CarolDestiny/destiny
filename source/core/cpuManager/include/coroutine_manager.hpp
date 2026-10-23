@@ -1,11 +1,13 @@
 #pragma once
 
 #include "./promise_local.hpp"
+#include "coroutine_manager.hpp"
 #include "destiny/define/access/access.hpp"
 
 #include <atomic>
 #include <cstdint>
 #include <deque>
+#include <vector>
 
 namespace destiny::core::cpu_manager {
         class CoroutineBase;
@@ -34,8 +36,27 @@ class destiny::core::cpu_manager::CoroutineBase {
         DESTINY_DEFINE_ACCESS_PUBLIC void        set_estimate_next_cycle(uint32_t estimate_next_cycle) noexcept;
         DESTINY_DEFINE_ACCESS_PROTECTED uint32_t get_estimate_next_cycle() const noexcept;
 
+        DESTINY_DEFINE_ACCESS_PROTECTED enum class Priority : uint8_t
+        {
+                urgent_block                = 0,
+                periodic_protected_catch_up = 1,
+                periodic_protected_skip     = 2,
+                urgent_normal               = 3,
+                periodic_fixed_catch_up     = 4,
+                periodic_fixed_skip         = 5,
+                regular_high                = 6,
+                periodic_bounded_catch_up   = 7,
+                periodic_bounded_skip       = 8,
+                regular_normal              = 9,
+                regular_low                 = 10,
+                regular_background          = 11
+        };
+        DESTINY_DEFINE_ACCESS_PROTECTED Priority priority_;
+        DESTINY_DEFINE_ACCESS_PROTECTED Priority get_priority() const noexcept;
+
         DESTINY_DEFINE_ACCESS_PRIVATE void* promiseLocalGet_;
-        DESTINY_DEFINE_ACCESS_PUBLIC template<typename T> bool set_res(T value) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC template <typename T>
+        bool set_res(T value) noexcept;
 
         DESTINY_DEFINE_ACCESS_PRIVATE void* slots_[4];
         DESTINY_DEFINE_ACCESS_PUBLIC void*& slot0() noexcept;
@@ -48,14 +69,12 @@ class destiny::core::cpu_manager::CoroutineUrgent : public CoroutineBase {
         DESTINY_DEFINE_ACCESS_PUBLIC CoroutineUrgent() noexcept  = default;
         DESTINY_DEFINE_ACCESS_PUBLIC ~CoroutineUrgent() noexcept = default;
 
-        DESTINY_DEFINE_ACCESS_PUBLIC enum class Priority : bool
+        DESTINY_DEFINE_ACCESS_PUBLIC enum class Priority : uint8_t
         {
-                block,
-                normal
+                block  = (uint8_t)CoroutineBase::Priority::urgent_block,
+                normal = (uint8_t)CoroutineBase::Priority::urgent_normal
         };
-        DESTINY_DEFINE_ACCESS_PRIVATE Priority   priority_{Priority::normal};
-        DESTINY_DEFINE_ACCESS_PUBLIC void        set_priority(Priority priority) noexcept;
-        DESTINY_DEFINE_ACCESS_PROTECTED Priority get_priority() const noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC void set_priority(Priority priority) noexcept;
 };
 
 class destiny::core::cpu_manager::CoroutinePeriodic : public CoroutineBase {
@@ -66,16 +85,14 @@ class destiny::core::cpu_manager::CoroutinePeriodic : public CoroutineBase {
 
         DESTINY_DEFINE_ACCESS_PUBLIC enum class Priority : uint8_t
         {
-                protected_catchUp,
-                protected_skip,
-                fixed_catchUp,
-                fixed_skip,
-                bounded_catchUp,
-                bounded_skip
+                protected_catch_up = (uint8_t)CoroutineBase::Priority::periodic_protected_catch_up,
+                protected_skip     = (uint8_t)CoroutineBase::Priority::periodic_protected_skip,
+                fixed_catch_up     = (uint8_t)CoroutineBase::Priority::periodic_fixed_catch_up,
+                fixed_skip         = (uint8_t)CoroutineBase::Priority::periodic_fixed_skip,
+                bounded_catch_up   = (uint8_t)CoroutineBase::Priority::periodic_bounded_catch_up,
+                bounded_skip       = (uint8_t)CoroutineBase::Priority::periodic_bounded_skip
         };
-        DESTINY_DEFINE_ACCESS_PRIVATE Priority   priority_{Priority::fixed_catchUp};
-        DESTINY_DEFINE_ACCESS_PUBLIC void        set_priority(Priority priority) noexcept;
-        DESTINY_DEFINE_ACCESS_PROTECTED Priority get_priority() const noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC void set_priority(Priority priority) noexcept;
 
         DESTINY_DEFINE_ACCESS_PRIVATE uint32_t   duration_{UINT32_MAX};
         DESTINY_DEFINE_ACCESS_PUBLIC void        set_duration(uint32_t duration) noexcept;
@@ -90,21 +107,19 @@ class destiny::core::cpu_manager::CoroutineRegular : public CoroutineBase {
 
         DESTINY_DEFINE_ACCESS_PUBLIC enum class Priority : uint8_t
         {
-                high,
-                normal,
-                low,
-                background
+                high       = (uint8_t)CoroutineBase::Priority::regular_high,
+                normal     = (uint8_t)CoroutineBase::Priority::regular_normal,
+                low        = (uint8_t)CoroutineBase::Priority::regular_low,
+                background = (uint8_t)CoroutineBase::Priority::regular_background
         };
-        DESTINY_DEFINE_ACCESS_PRIVATE Priority   priority_{Priority::normal};
-        DESTINY_DEFINE_ACCESS_PUBLIC void        set_priority(Priority priority) noexcept;
-        DESTINY_DEFINE_ACCESS_PROTECTED Priority get_priority() const noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC void set_priority(Priority priority) noexcept;
 };
 
 class destiny::core::cpu_manager::CoroutineManager {
         DESTINY_DEFINE_ACCESS_PUBLIC CoroutineManager() noexcept  = default;
         DESTINY_DEFINE_ACCESS_PUBLIC ~CoroutineManager() noexcept = default;
 
-        DESTINY_DEFINE_ACCESS_PRIVATE std::deque<CoroutineBase*> coroutineList_;
+        DESTINY_DEFINE_ACCESS_PRIVATE std::vector<CoroutineBase*> coroutine_exec_list;
 
         DESTINY_DEFINE_ACCESS_PUBLIC bool add(CoroutineUrgent coroutineUrgent) noexcept;
         DESTINY_DEFINE_ACCESS_PUBLIC bool add(CoroutineRegular coroutineRegular) noexcept;

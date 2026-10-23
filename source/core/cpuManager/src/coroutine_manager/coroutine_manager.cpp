@@ -39,7 +39,7 @@ bool destiny::core::cpu_manager::CoroutineManager::exec() noexcept
         //
         while (true)
         {
-
+                
         }
         return true;
 }
