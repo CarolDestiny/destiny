@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include <windows.h>
-
 using namespace std;
 
 static void function1(destiny::core::cpu_manager::CoroutineBase& coroutineBase) noexcept
@@ -36,7 +34,7 @@ int main()
         }
 
         destiny::this_thread::coroutineManager().exec();
-        Sleep(10000);
+        // Sleep(10000);
         destiny::core::cpu_manager::dealloc(cpuCore);
         destiny::core::cpu_manager::unload();
 

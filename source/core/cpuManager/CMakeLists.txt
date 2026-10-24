@@ -15,6 +15,10 @@ add_library(
 
 target_compile_features(destiny_core_cpuManager PUBLIC cxx_std_20)
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(destiny_core_cpuManager PRIVATE Threads::Threads)
+
 destiny_map_headers(
         destiny_core_cpuManager
         "core/cpuManager"
