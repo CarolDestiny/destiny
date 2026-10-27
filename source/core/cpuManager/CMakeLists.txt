@@ -11,6 +11,7 @@ add_library(
 
         "src/coroutine_manager/coroutine.cpp"
         "src/coroutine_manager/coroutine_manager.cpp"
+        "src/coroutine_manager/coroutine_pool.cpp"
 )
 
 target_compile_features(destiny_core_cpuManager PUBLIC cxx_std_20)

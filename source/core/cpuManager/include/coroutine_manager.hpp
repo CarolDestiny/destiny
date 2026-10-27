@@ -6,6 +6,7 @@
 
 #include <atomic>
 #include <cstdint>
+#include <list>
 #include <deque>
 #include <vector>
 
@@ -119,13 +120,22 @@ class destiny::core::cpu_manager::CoroutineManager {
         DESTINY_DEFINE_ACCESS_PUBLIC CoroutineManager() noexcept  = default;
         DESTINY_DEFINE_ACCESS_PUBLIC ~CoroutineManager() noexcept = default;
 
-        DESTINY_DEFINE_ACCESS_PRIVATE std::vector<CoroutineBase*> coroutine_exec_list;
+        DESTINY_DEFINE_ACCESS_PRIVATE std::list<std::vector<CoroutineUrgent>> coroutineUrgentBuffer_;
+        DESTINY_DEFINE_ACCESS_PRIVATE std::vector<CoroutineUrgent*> coroutineUrgentCache_;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  acquire(CoroutineUrgent*& coroutineUrgent) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  cancel(CoroutineUrgent*& coroutineUrgent) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  submit(CoroutineUrgent*& coroutineUrgent) noexcept;
+        DESTINY_DEFINE_ACCESS_PRIVATE bool release(CoroutineUrgent*& coroutineUrgent) noexcept;
 
-        DESTINY_DEFINE_ACCESS_PUBLIC bool add(CoroutineUrgent coroutineUrgent) noexcept;
-        DESTINY_DEFINE_ACCESS_PUBLIC bool add(CoroutineRegular coroutineRegular) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  acquire(CoroutinePeriodic*& coroutinePeriodic) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  cancel(CoroutinePeriodic*& coroutinePeriodic) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  submit(CoroutinePeriodic*& coroutinePeriodic) noexcept;
+        DESTINY_DEFINE_ACCESS_PRIVATE bool release(CoroutinePeriodic*& coroutinePeriodic) noexcept;
 
-        DESTINY_DEFINE_ACCESS_PRIVATE CoroutinePeriodic* nearly_coroutinePeriodic_{nullptr};
-        DESTINY_DEFINE_ACCESS_PUBLIC bool                add(CoroutinePeriodic coroutinePeriodic) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  acquire(CoroutineRegular*& coroutineRegular) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  cancel(CoroutineRegular*& coroutineRegular) noexcept;
+        DESTINY_DEFINE_ACCESS_PUBLIC bool  submit(CoroutineRegular*& coroutineRegular) noexcept;
+        DESTINY_DEFINE_ACCESS_PRIVATE bool release(CoroutineRegular*& coroutineRegular) noexcept;
 
         DESTINY_DEFINE_ACCESS_PUBLIC static void function_maintain(CoroutineBase& coroutineBase) noexcept;
 
