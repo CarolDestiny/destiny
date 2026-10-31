@@ -1,4 +1,5 @@
 add_subdirectory(access)
 add_subdirectory(compiler)
 add_subdirectory(cpu)
+add_subdirectory(instruction)
 add_subdirectory(platform)
